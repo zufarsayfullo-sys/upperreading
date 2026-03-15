@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading Comprehension · Oxford Navigate B2</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #0e0e16;
+  --amber:  #c8933a;
+  --amber2: #e8b45a;
+  --amber3: #f5d080;
+  --cream:  #f2ebe0;
+  --muted:  rgba(242,235,224,0.5);
+  --red:    #b84040;
+  --green:  #3a9e68;
+  --border: rgba(200,147,58,0.22);
+  --glass:  rgba(255,255,255,0.03);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Mulish',sans-serif; min-height:100vh; background:var(--ink); color:var(--cream); overflow-x:hidden; }
+.bg {
+  position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 30%, rgba(200,147,58,0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 60% at 80% 70%, rgba(200,147,58,0.05) 0%, transparent 60%),
+    linear-gradient(160deg, #080810 0%, #0e0e18 100%);
+}
+#app {
+  position:relative; z-index:10; min-height:100vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:24px 16px 48px;
+}
+.card {
+  background:rgba(12,12,20,0.94); backdrop-filter:blur(24px);
+  border:1px solid var(--border); border-radius:22px;
+  width:100%; max-width:880px;
+  box-shadow:0 40px 100px rgba(0,0,0,0.7), inset 0 1px 0 rgba(200,147,58,0.08);
+  overflow:hidden;
+}
+
+/* ══ INTRO ══ */
+#intro-screen { padding:52px 52px 44px; text-align:center; }
+.eyebrow { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--amber); margin-bottom:18px; font-weight:700; }
+.intro-title { font-family:'Lora',serif; font-size:40px; line-height:1.12; margin-bottom:14px; color:var(--cream); }
+.intro-title em { color:var(--amber2); font-style:italic; }
+.intro-desc { color:var(--muted); font-size:15px; line-height:1.75; max-width:520px; margin:0 auto 28px; }
+
+/* Exercise type cards */
+.ex-type-row { display:flex; gap:12px; max-width:520px; margin:0 auto 26px; }
+.ex-type-card {
+  flex:1; background:var(--glass); border:1.5px solid var(--border);
+  border-radius:14px; padding:18px 16px; text-align:left;
+}
+.ex-type-num { font-family:'Lora',serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--amber); margin-bottom:6px; }
+.ex-type-title { font-family:'Lora',serif; font-size:17px; color:var(--cream); margin-bottom:5px; }
+.ex-type-desc { font-size:12px; color:var(--muted); line-height:1.6; }
+
+.text-selector { display:flex; flex-direction:column; gap:9px; max-width:560px; margin:0 auto 28px; text-align:left; }
+.ts-label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--amber); margin-bottom:4px; font-weight:700; }
+.ts-btn {
+  background:var(--glass); border:1.5px solid var(--border);
+  border-radius:12px; padding:15px 18px; cursor:pointer;
+  transition:all 0.25s; display:flex; align-items:center; gap:14px;
+}
+.ts-btn:hover { background:rgba(200,147,58,0.08); border-color:rgba(200,147,58,0.45); transform:translateX(4px); }
+.ts-btn.selected { background:rgba(200,147,58,0.12); border-color:var(--amber2); }
+.ts-num { font-family:'Lora',serif; font-size:20px; color:var(--amber2); min-width:24px; font-style:italic; }
+.ts-title { font-family:'Lora',serif; font-size:16px; color:var(--cream); margin-bottom:2px; }
+.ts-meta { font-size:12px; color:var(--muted); }
+.ts-check { margin-left:auto; font-size:18px; opacity:0; transition:opacity 0.2s; }
+.ts-btn.selected .ts-check { opacity:1; }
+
+.intro-tip {
+  background:rgba(200,147,58,0.07); border:1px solid rgba(200,147,58,0.15);
+  border-radius:10px; padding:13px 18px; max-width:480px; margin:0 auto 26px;
+  font-size:13px; line-height:1.7; color:rgba(242,235,224,0.6); text-align:left;
+}
+.intro-tip strong { color:var(--amber3); }
+
+/* ══ NAME ══ */
+#name-screen { padding:52px; text-align:center; }
+.name-input {
+  width:100%; max-width:380px; display:block; margin:0 auto 8px;
+  background:rgba(255,255,255,0.05); border:1.5px solid rgba(200,147,58,0.25);
+  border-radius:10px; padding:14px 18px;
+  font-family:'Mulish',sans-serif; font-size:16px; color:var(--cream);
+  outline:none; transition:border-color 0.2s; text-align:center;
+}
+.name-input::placeholder { color:rgba(242,235,224,0.2); }
+.name-input:focus { border-color:var(--amber); }
+.name-error { color:var(--red); font-size:13px; margin-bottom:14px; display:none; }
+
+/* ══ READING SCREEN ══ */
+#reading-screen { display:none; }
+.reading-header {
+  background:rgba(200,147,58,0.07); border-bottom:1px solid var(--border);
+  padding:18px 46px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+}
+.rh-eyebrow { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--amber); font-weight:700; margin-bottom:3px; }
+.rh-title { font-family:'Lora',serif; font-size:20px; color:var(--cream); font-style:italic; }
+.timer-wrap { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:13px; flex-shrink:0; }
+#timer-display { font-family:'Lora',serif; font-size:26px; color:var(--cream); transition:color 0.4s; }
+#timer-display.warn   { color:#e09a3a; }
+#timer-display.danger { color:var(--red); animation:blink 0.8s infinite; }
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.35}}
+
+.reading-body { padding:28px 46px 0; }
+
+/* Article */
+.article-wrap {
+  background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.07);
+  border-radius:14px; padding:24px 26px; margin-bottom:28px;
+  max-height:240px; overflow-y:auto; position:relative;
+}
+.article-wrap::-webkit-scrollbar { width:4px; }
+.article-wrap::-webkit-scrollbar-track { background:transparent; }
+.article-wrap::-webkit-scrollbar-thumb { background:rgba(200,147,58,0.3); border-radius:4px; }
+.article-title { font-family:'Lora',serif; font-size:18px; color:var(--amber2); margin-bottom:14px; font-style:italic; }
+.article-text { font-size:14px; line-height:1.88; color:rgba(242,235,224,0.75); }
+.para { margin-bottom:12px; }
+.para:last-child { margin-bottom:0; }
+.para-num { font-weight:700; color:var(--amber); font-size:12px; margin-right:5px; }
+.read-fade { position:sticky; bottom:0; height:32px; background:linear-gradient(transparent,rgba(10,10,18,0.9)); pointer-events:none; }
+
+/* ══ EXERCISE BLOCKS ══ */
+.exercise-block {
+  margin-bottom:24px;
+  border:1px solid var(--border); border-radius:14px; overflow:hidden;
+}
+.exercise-header {
+  background:rgba(200,147,58,0.07); border-bottom:1px solid var(--border);
+  padding:13px 20px; display:flex; align-items:center; gap:12px;
+}
+.ex-badge {
+  font-size:9px; letter-spacing:3px; text-transform:uppercase;
+  font-weight:700; padding:3px 10px; border-radius:20px;
+}
+.ex-badge-1 { background:rgba(200,147,58,0.2); color:var(--amber2); border:1px solid rgba(200,147,58,0.3); }
+.ex-badge-2 { background:rgba(58,158,104,0.15); color:#7dd8a8; border:1px solid rgba(58,158,104,0.3); }
+.ex-instr { font-size:13px; color:var(--muted); }
+.ex-instr strong { color:var(--cream); }
+.exercise-body { padding:18px 20px; display:flex; flex-direction:column; gap:18px; }
+
+/* Question */
+.q-block {}
+.q-num-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(200,147,58,0.55); margin-bottom:5px; }
+.q-stem {
+  font-family:'Lora',serif; font-size:16px; line-height:1.55; color:var(--cream);
+  margin-bottom:11px;
+}
+.q-stem em { color:var(--amber3); font-style:italic; }
+.q-stem .gap {
+  display:inline-block; min-width:120px; border-bottom:2px solid rgba(200,147,58,0.4);
+  margin:0 4px; vertical-align:bottom; color:rgba(200,147,58,0.4); font-style:italic;
+  font-size:14px; padding:0 4px;
+}
+
+/* MCQ options */
+.opts { display:flex; flex-direction:column; gap:7px; }
+.opt {
+  display:flex; align-items:flex-start; gap:10px;
+  background:var(--glass); border:1.5px solid rgba(255,255,255,0.07);
+  border-radius:9px; padding:11px 14px; cursor:pointer;
+  font-size:14px; color:rgba(242,235,224,0.72);
+  transition:all 0.2s; user-select:none; line-height:1.5;
+}
+.opt:hover:not(.disabled) { background:rgba(200,147,58,0.09); border-color:rgba(200,147,58,0.35); color:var(--cream); transform:translateX(3px); }
+.opt-lbl {
+  flex-shrink:0; width:20px; height:20px; border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.18);
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:700; color:rgba(255,255,255,0.3); transition:all 0.2s; margin-top:1px;
+}
+.opt:hover:not(.disabled) .opt-lbl { border-color:var(--amber); color:var(--amber); }
+.opt.correct-ans { background:rgba(58,158,104,0.16); border-color:var(--green); color:var(--cream); animation:pop 0.3s ease; }
+.opt.correct-ans .opt-lbl { background:var(--green); border-color:var(--green); color:#fff; }
+.opt.wrong-ans { background:rgba(184,64,64,0.13); border-color:var(--red); color:rgba(242,235,224,0.5); }
+.opt.wrong-ans .opt-lbl { background:var(--red); border-color:var(--red); color:#fff; }
+.opt.disabled { cursor:default; pointer-events:none; }
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.01)}100%{transform:scale(1)}}
+
+/* T/F */
+.tf-row { display:flex; gap:9px; }
+.tf-btn {
+  flex:1; padding:12px; border-radius:9px; cursor:pointer;
+  background:var(--glass); border:1.5px solid rgba(255,255,255,0.07);
+  font-family:'Lora',serif; font-size:15px; color:rgba(242,235,224,0.7);
+  transition:all 0.2s; text-align:center; user-select:none; font-style:italic;
+}
+.tf-btn:hover:not(.disabled) { background:rgba(200,147,58,0.09); border-color:rgba(200,147,58,0.35); color:var(--cream); transform:translateY(-2px); }
+.tf-btn.correct-ans { background:rgba(58,158,104,0.16); border-color:var(--green); color:#7dd8a8; font-style:normal; font-weight:700; }
+.tf-btn.wrong-ans   { background:rgba(184,64,64,0.13); border-color:var(--red); color:rgba(242,235,224,0.45); }
+.tf-btn.disabled { cursor:default; pointer-events:none; }
+
+/* Feedback */
+.fb { border-radius:8px; padding:10px 13px; margin-top:9px; font-size:13px; line-height:1.6; display:none; animation:fadeup 0.25s ease; }
+.fb.show { display:block; }
+.fb.ok  { background:rgba(58,158,104,0.13); border-left:3px solid var(--green); }
+.fb.bad { background:rgba(184,64,64,0.13); border-left:3px solid var(--red); }
+@keyframes fadeup{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Footer */
+.reading-footer {
+  padding:20px 46px 28px;
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+}
+.prog-wrap { flex:1; }
+.prog-label { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.prog-track { display:flex; gap:3px; }
+.prog-ex {
+  flex:1; border-radius:4px; overflow:hidden;
+}
+.prog-ex-label { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.prog-bar { height:4px; background:rgba(255,255,255,0.07); border-radius:4px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:4px; transition:width 0.5s ease; width:0%; }
+.prog-fill-1 { background:linear-gradient(90deg,var(--amber),var(--amber2)); }
+.prog-fill-2 { background:linear-gradient(90deg,#3a9e68,#7dd8a8); }
+
+/* Buttons */
+.btn { font-family:'Mulish',sans-serif; font-size:13px; font-weight:700; padding:11px 22px; border-radius:9px; border:none; cursor:pointer; transition:all 0.2s; letter-spacing:0.5px; }
+.btn-primary { background:linear-gradient(135deg,var(--amber),#8a5a10); color:var(--cream); }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(200,147,58,0.3); }
+.btn-ghost { background:transparent; color:rgba(255,255,255,0.38); border:1px solid rgba(255,255,255,0.12); }
+.btn-ghost:hover { color:var(--cream); border-color:rgba(255,255,255,0.28); background:rgba(255,255,255,0.04); }
+.btn-row { display:flex; gap:9px; }
+
+/* ══ RESULT ══ */
+#result-screen { padding:46px 50px; text-align:center; }
+.result-grid { display:flex; gap:16px; justify-content:center; margin-bottom:26px; flex-wrap:wrap; }
+.result-ex-card {
+  background:var(--glass); border:1px solid var(--border);
+  border-radius:14px; padding:20px 28px; min-width:160px;
+}
+.rec-label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--amber); margin-bottom:8px; }
+.rec-score { font-family:'Lora',serif; font-size:36px; color:var(--cream); line-height:1; }
+.rec-score span { font-size:14px; color:var(--muted); font-family:'Mulish',sans-serif; }
+.rec-pct { font-size:13px; color:var(--muted); margin-top:4px; }
+.result-title { font-family:'Lora',serif; font-size:30px; margin-bottom:8px; color:var(--cream); }
+.result-sub { color:var(--muted); font-size:15px; margin-bottom:26px; }
+
+/* Review */
+.review-wrap { text-align:left; margin:0 0 24px; }
+.review-ex-title {
+  font-size:10px; letter-spacing:3px; text-transform:uppercase;
+  font-weight:700; margin:16px 0 10px;
+}
+.review-ex-title.t1 { color:var(--amber); }
+.review-ex-title.t2 { color:#7dd8a8; }
+.rv-item { background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:10px 14px; margin-bottom:7px; font-size:13px; line-height:1.65; }
+.rv-q { color:var(--muted); margin-bottom:3px; font-size:12px; }
+.rv-yours { color:var(--red); }
+.rv-correct { color:var(--green); font-weight:700; }
+.rv-ok { color:var(--green); font-weight:700; }
+
+/* Timeout */
+#timeout-screen { padding:46px 50px; text-align:center; }
+.to-icon { font-size:52px; margin-bottom:14px; }
+.to-title { font-family:'Lora',serif; font-size:32px; margin-bottom:8px; }
+.to-sub { color:var(--muted); font-size:15px; margin-bottom:24px; }
+
+.hidden { display:none!important; }
+
+@media(max-width:640px){
+  #intro-screen,#name-screen,#result-screen,#timeout-screen { padding:30px 20px; }
+  .reading-header,.reading-body,.reading-footer { padding-left:18px; padding-right:18px; }
+  .ex-type-row { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div id="app">
+<div class="card">
+
+<!-- ══════════ INTRO ══════════ -->
+<div id="intro-screen">
+  <div class="eyebrow">Oxford Navigate · Upper Intermediate · B2</div>
+  <h1 class="intro-title">Reading<br><em>Comprehension</em></h1>
+  <p class="intro-desc">Choose one of the five texts. Each text has two exercises — sentence completion and True/False.</p>
+
+  <div class="ex-type-row">
+    <div class="ex-type-card">
+      <div class="ex-type-num">Exercise 1</div>
+      <div class="ex-type-title">Sentence Completion</div>
+      <div class="ex-type-desc">Choose the best ending (A–D) to complete each sentence according to the text.</div>
+    </div>
+    <div class="ex-type-card">
+      <div class="ex-type-num">Exercise 2</div>
+      <div class="ex-type-title">True or False</div>
+      <div class="ex-type-desc">Decide if each statement is True or False based on information in the text.</div>
+    </div>
+  </div>
+
+  <div class="text-selector">
+    <div class="ts-label">Select a text to begin</div>
+    <div class="ts-btn" onclick="selectText(0)" id="ts-0">
+      <div class="ts-num">1</div>
+      <div><div class="ts-title">The Carrot or the Stick?</div><div class="ts-meta">Business · Psychology · 3+3 questions</div></div>
+      <div class="ts-check">✓</div>
+    </div>
+    <div class="ts-btn" onclick="selectText(1)" id="ts-1">
+      <div class="ts-num">2</div>
+      <div><div class="ts-title">The Science of Sleep</div><div class="ts-meta">Health · Biology · 3+3 questions</div></div>
+      <div class="ts-check">✓</div>
+    </div>
+    <div class="ts-btn" onclick="selectText(2)" id="ts-2">
+      <div class="ts-num">3</div>
+      <div><div class="ts-title">Social Media and Teenagers</div><div class="ts-meta">Technology · Society · 3+3 questions</div></div>
+      <div class="ts-check">✓</div>
+    </div>
+    <div class="ts-btn" onclick="selectText(3)" id="ts-3">
+      <div class="ts-num">4</div>
+      <div><div class="ts-title">The Gig Economy</div><div class="ts-meta">Work · Economics · 3+3 questions</div></div>
+      <div class="ts-check">✓</div>
+    </div>
+    <div class="ts-btn" onclick="selectText(4)" id="ts-4">
+      <div class="ts-num">5</div>
+      <div><div class="ts-title">Artificial Intelligence in Education</div><div class="ts-meta">Technology · Education · 3+3 questions</div></div>
+      <div class="ts-check">✓</div>
+    </div>
+  </div>
+
+  <div class="intro-tip">
+    <strong>Remember:</strong> For Exercise 2, the statement must be <strong>directly supported</strong> by the text to be True. If it is not clearly stated, choose <strong>False</strong>.
+  </div>
+
+  <button class="btn btn-primary" onclick="goToName()" id="start-btn" style="opacity:0.4;pointer-events:none">Select a text to begin →</button>
+</div>
+
+<!-- ══════════ NAME ══════════ -->
+<div id="name-screen" class="hidden">
+  <div class="eyebrow">Oxford Navigate · Upper Intermediate · Reading</div>
+  <h2 style="font-family:'Lora',serif;font-size:28px;margin-bottom:12px;text-align:center">Before you begin…</h2>
+  <p style="color:var(--muted);font-size:15px;margin-bottom:24px;text-align:center">Enter your name so your teacher can see your results.</p>
+  <input type="text" id="student-name" class="name-input" placeholder="Your full name" maxlength="60"
+    onkeydown="if(event.key==='Enter')confirmName()" />
+  <div class="name-error" id="name-error">Please enter your name.</div>
+  <div style="text-align:center"><button class="btn btn-primary" onclick="confirmName()">Start Reading →</button></div>
+</div>
+
+<!-- ══════════ READING ══════════ -->
+<div id="reading-screen">
+  <div class="reading-header">
+    <div>
+      <div class="rh-eyebrow">Upper Intermediate · Reading Comprehension</div>
+      <div class="rh-title" id="rh-title"></div>
+    </div>
+    <div class="timer-wrap">⏱ <span id="timer-display">8:00</span></div>
+  </div>
+
+  <div class="reading-body">
+    <!-- Article -->
+    <div class="article-wrap" id="article-wrap">
+      <div class="article-title" id="article-title"></div>
+      <div class="article-text" id="article-text"></div>
+      <div class="read-fade"></div>
+    </div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise-block">
+      <div class="exercise-header">
+        <span class="ex-badge ex-badge-1">Exercise 1</span>
+        <span class="ex-instr"><strong>Sentence Completion</strong> — Choose the correct ending (A–D) for each sentence.</span>
+      </div>
+      <div class="exercise-body" id="ex1-body"></div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise-block">
+      <div class="exercise-header">
+        <span class="ex-badge ex-badge-2">Exercise 2</span>
+        <span class="ex-instr"><strong>True or False</strong> — Decide if each statement is True or False according to the text.</span>
+      </div>
+      <div class="exercise-body" id="ex2-body"></div>
+    </div>
+  </div>
+
+  <div class="reading-footer">
+    <div class="prog-wrap">
+      <div style="display:flex;gap:20px;">
+        <div class="prog-ex">
+          <div class="prog-ex-label">Exercise 1 — <span id="prog-ex1-text">0/3</span></div>
+          <div class="prog-bar"><div class="prog-fill prog-fill-1" id="prog-fill-1"></div></div>
+        </div>
+        <div class="prog-ex">
+          <div class="prog-ex-label">Exercise 2 — <span id="prog-ex2-text">0/3</span></div>
+          <div class="prog-bar"><div class="prog-fill prog-fill-2" id="prog-fill-2"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-left:16px">
+      <button class="btn btn-ghost" onclick="backToMenu()">← Menu</button>
+      <button class="btn btn-primary" id="submit-btn" onclick="submitAll()" style="display:none">Submit →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ RESULT ══════════ -->
+<div id="result-screen" class="hidden">
+  <div class="eyebrow">Results</div>
+  <h2 class="result-title" id="result-title"></h2>
+  <p class="result-sub" id="result-sub"></p>
+  <div class="result-grid">
+    <div class="result-ex-card">
+      <div class="rec-label">Exercise 1 · Sentence Completion</div>
+      <div class="rec-score" id="rec-score-1">0<span> / 3</span></div>
+      <div class="rec-pct" id="rec-pct-1"></div>
+    </div>
+    <div class="result-ex-card">
+      <div class="rec-label">Exercise 2 · True or False</div>
+      <div class="rec-score" id="rec-score-2">0<span> / 3</span></div>
+      <div class="rec-pct" id="rec-pct-2"></div>
+    </div>
+  </div>
+  <div class="review-wrap" id="review"></div>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <button class="btn btn-ghost" onclick="backToMenu()">← Choose Another Text</button>
+    <button class="btn btn-primary" onclick="retryText()">Try Again →</button>
+  </div>
+</div>
+
+<!-- ══════════ TIMEOUT ══════════ -->
+<div id="timeout-screen" class="hidden">
+  <div class="to-icon">⌛</div>
+  <h2 class="to-title">Time's Up!</h2>
+  <p class="to-sub">Your time ran out. Here are your results.</p>
+  <div class="result-grid">
+    <div class="result-ex-card">
+      <div class="rec-label">Exercise 1</div>
+      <div class="rec-score" id="to-score-1">0<span> / 3</span></div>
+    </div>
+    <div class="result-ex-card">
+      <div class="rec-label">Exercise 2</div>
+      <div class="rec-score" id="to-score-2">0<span> / 3</span></div>
+    </div>
+  </div>
+  <div class="review-wrap" id="to-review"></div>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+    <button class="btn btn-ghost" onclick="backToMenu()">← Choose Another Text</button>
+    <button class="btn btn-primary" onclick="retryText()">Try Again →</button>
+  </div>
+</div>
+
+</div></div>
+
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzvhd9K2CVC9_EPkhAEYFDp8K1CBpGUWNrEAEVC4w4Q8eHh5uDFO_aaKPMcH-Tajv5U/exec';
+
+// ══════════════════════════════════════════════════════════════════════
+// TEXT BANK — 5 texts, each with:
+//   ex1: 3 sentence completion questions (stem + 4 endings A–D)
+//   ex2: 3 True/False questions
+//
+// Wrong endings in ex1 mirror student errors:
+//   - choosing a surface/literal detail rather than the main idea
+//   - picking something true but from the WRONG paragraph
+//   - picking a plausible but not stated conclusion
+// ══════════════════════════════════════════════════════════════════════
+const TEXTS = [
+
+// ────────────────────────────────────────────────────────────────────
+// TEXT 1 · The Carrot or the Stick?
+// ────────────────────────────────────────────────────────────────────
+{
+  title: "The Carrot or the Stick?",
+  topic: "Business · Psychology",
+  paragraphs: [
+    "In the world of business, managers constantly look for ways to improve the productivity of their staff. For a long time, the most common method has been a system known as \"the carrot and the stick.\" This famous phrase comes from the traditional way of moving a donkey. You can either put a delicious vegetable in front of the animal to encourage it to move forward, or you can hit it with a piece of wood to make it go faster. In human psychology, the \"carrot\" represents a reward, such as a bonus or a promotion, while the \"stick\" is a punishment, like the fear of losing a job or receiving a lower salary.",
+    "Historically, the \"stick\" was the main method used in factories during the last century. Owners believed that people were naturally lazy and would only work hard if they were afraid of the consequences. This approach works well for simple, repetitive tasks where the worker does not need to think too much. However, modern research suggests that for jobs requiring complex skills or creativity, this method is actually harmful. When people feel stress or fear, their ability to solve problems decreases. They avoid taking risks because they do not want to make a mistake.",
+    "On the other hand, the \"carrot\" approach seems much more positive. Companies offer extra money, prizes, or extra days off to staff who reach their targets. While this is better than punishment, it also has limits. Psychologists have found that after a certain point, a higher salary does not make people work harder. If the only goal is money, employees often lose interest in the quality of their work. They focus only on the final result and the reward, rather than enjoying the process or caring about the company.",
+    "The most effective motivation is neither a carrot nor a stick. It is an inner desire to do well. This happens when staff feel that their work is useful and important. When a manager respects their team and gives them the freedom to make their own decisions, employees work better. They do not need a financial bonus to work late; they do it because they want to succeed. Therefore, the best leaders today are those who understand that while money is necessary, a feeling of purpose is what truly pushes people toward success."
+  ],
+  ex1: [
+    {
+      stem: "According to the text, the \"stick\" method works best for tasks that are …",
+      opts: [
+        "creative and require a lot of independent thinking.",
+        "simple and repetitive, requiring little thought.",
+        "related to customer service and communication.",
+        "complex and involve solving difficult problems."
+      ],
+      a: 1,
+      exp: "Paragraph 2 states the stick approach works well for <em>simple, repetitive tasks where the worker does not need to think too much</em>. Options A and D describe the opposite type of work; option C is not mentioned."
+    },
+    {
+      stem: "Psychologists have found that offering a higher salary …",
+      opts: [
+        "always motivates employees to work harder and longer hours.",
+        "is more effective than giving employees freedom of choice.",
+        "stops improving performance after a certain point.",
+        "is the single most important factor in employee satisfaction."
+      ],
+      a: 2,
+      exp: "Paragraph 3 directly states that <em>after a certain point, a higher salary does not make people work harder</em>. Options A, B and D are not supported or contradict the text."
+    },
+    {
+      stem: "The most effective form of motivation, according to the text, comes from …",
+      opts: [
+        "receiving regular financial bonuses from the company.",
+        "fear of losing one's job or receiving a lower salary.",
+        "an inner desire to do meaningful and useful work.",
+        "being offered extra days off for reaching targets."
+      ],
+      a: 2,
+      exp: "Paragraph 4 clearly states that the most effective motivation is <em>an inner desire to do well</em> when staff feel their work is useful. Options A, B and D describe the carrot or stick methods, which the text presents as less effective."
+    }
+  ],
+  ex2: [
+    {
+      stmt: "Fear encourages employees to take more risks and try new ideas.",
+      a: "False",
+      exp: "Paragraph 2 says that when people feel fear, <em>they avoid taking risks</em> — the direct opposite. <strong>False.</strong>"
+    },
+    {
+      stmt: "Employees who focus only on financial rewards often lose interest in the quality of their work.",
+      a: "True",
+      exp: "Paragraph 3 directly states: <em>employees often lose interest in the quality of their work</em> when the only goal is money. <strong>True.</strong>"
+    },
+    {
+      stmt: "The best managers today use a combination of rewards and punishments equally.",
+      a: "False",
+      exp: "Paragraph 4 argues that the best leaders move away from both carrots and sticks, and instead build a culture where <em>work itself is the reward</em>. Equal use of both is not recommended. <strong>False.</strong>"
+    }
+  ]
+},
+
+// ────────────────────────────────────────────────────────────────────
+// TEXT 2 · The Science of Sleep
+// ────────────────────────────────────────────────────────────────────
+{
+  title: "The Science of Sleep",
+  topic: "Health · Biology",
+  paragraphs: [
+    "Sleep is one of the most fundamental human needs, yet it remains one of the least understood. For centuries, people believed that sleep was simply a passive state — a time when the body and mind shut down to rest. Modern science has completely changed this view. We now know that while we sleep, the brain is in fact extremely active. It processes the information collected during the day, strengthens memories, and clears out harmful waste products that build up in brain cells during waking hours.",
+    "The amount of sleep a person requires changes significantly throughout their lifetime. Newborn babies sleep for up to sixteen hours a day, as their brains are developing at an extraordinary rate. Teenagers typically need between eight and ten hours, though research shows that their natural body clock shifts during adolescence, making it difficult for them to fall asleep before midnight. Adults generally require seven to nine hours, while older people often experience lighter, shorter sleep cycles. Importantly, the quality of sleep matters as much as the quantity.",
+    "Sleep deprivation — the condition of not getting enough sleep — has serious consequences for both physical and mental health. Studies have found that people who regularly sleep fewer than six hours a night have a significantly higher risk of developing heart disease, obesity, and type 2 diabetes. Mentally, a lack of sleep impairs concentration, decision-making, and emotional control. People who are sleep-deprived are more likely to feel anxious or depressed and find it harder to manage stress in their daily lives.",
+    "Despite the clear importance of sleep, many people in modern society treat it as a luxury rather than a necessity. Long working hours, the use of smartphones late at night, and high levels of stress are among the leading causes of poor sleep quality. Health experts recommend creating a consistent bedtime routine, avoiding screens for at least an hour before sleep, and keeping the bedroom cool and dark. Small changes in daily habits, they argue, can lead to dramatic improvements in both the length and quality of sleep."
+  ],
+  ex1: [
+    {
+      stem: "Modern science has shown that during sleep, the brain …",
+      opts: [
+        "completely shuts down so that the body can recover from the day.",
+        "only becomes active during the first hour of sleep.",
+        "is highly active, processing memories and removing waste.",
+        "focuses entirely on regulating the body's temperature."
+      ],
+      a: 2,
+      exp: "Paragraph 1 explains that the brain is <em>extremely active</em> during sleep — processing information, strengthening memories and clearing waste. Option A describes the old belief, which modern science has disproved."
+    },
+    {
+      stem: "Teenagers find it difficult to fall asleep early because …",
+      opts: [
+        "they spend too much time on smartphones and social media.",
+        "their body clock naturally shifts during adolescence.",
+        "they require less sleep than younger children.",
+        "they are under more stress than any other age group."
+      ],
+      a: 1,
+      exp: "Paragraph 2 states that <em>their natural body clock shifts during adolescence</em>, making it difficult to fall asleep before midnight. Option A may be a factor in modern life but is not what the text states as the reason."
+    },
+    {
+      stem: "Health experts recommend that people who want to improve their sleep should …",
+      opts: [
+        "sleep as long as possible at the weekend to compensate for the week.",
+        "exercise intensively before going to bed each night.",
+        "avoid using screens for at least an hour before sleeping.",
+        "keep their bedroom warm and brightly lit to feel comfortable."
+      ],
+      a: 2,
+      exp: "Paragraph 4 explicitly recommends <em>avoiding screens for at least an hour before sleep</em> and keeping the bedroom cool and dark. Options A, B and D contradict or are not supported by the advice in the text."
+    }
+  ],
+  ex2: [
+    {
+      stmt: "Before modern science, people thought the brain was active during sleep.",
+      a: "False",
+      exp: "Paragraph 1 says people believed sleep was a <em>passive state</em> where the body and mind <em>shut down</em>. The idea that the brain is active during sleep is the modern scientific view. <strong>False.</strong>"
+    },
+    {
+      stmt: "Sleeping fewer than six hours a night increases the risk of certain physical illnesses.",
+      a: "True",
+      exp: "Paragraph 3 states that people who regularly sleep fewer than six hours have a higher risk of <em>heart disease, obesity, and type 2 diabetes</em>. <strong>True.</strong>"
+    },
+    {
+      stmt: "The text states that only the quantity of sleep matters, not the quality.",
+      a: "False",
+      exp: "Paragraph 2 explicitly says <em>the quality of sleep matters as much as the quantity</em>. <strong>False.</strong>"
+    }
+  ]
+},
+
+// ────────────────────────────────────────────────────────────────────
+// TEXT 3 · Social Media and Teenagers
+// ────────────────────────────────────────────────────────────────────
+{
+  title: "Social Media and Teenagers",
+  topic: "Technology · Society",
+  paragraphs: [
+    "Over the past decade, social media platforms have become a central part of daily life for millions of teenagers around the world. Apps that allow users to share photographs, short videos, and personal updates have transformed the way young people communicate and express themselves. While many adults view this shift with concern, others point out that social media also offers genuine benefits — it allows teenagers to maintain friendships across long distances, discover new interests, and even develop valuable digital skills that will be useful in their future careers.",
+    "However, a growing body of research suggests that heavy use of social media can have a negative impact on the mental health of young people. One key issue is the culture of comparison that these platforms encourage. Teenagers are constantly exposed to carefully edited images of their peers looking attractive, successful, and happy. This can create unrealistic expectations about appearance and lifestyle, leading to feelings of inadequacy and low self-esteem. Studies have also shown a strong correlation between high levels of social media use and increased rates of anxiety and loneliness among teenagers.",
+    "Another serious concern is the issue of cyberbullying — the use of digital platforms to harass, humiliate, or threaten individuals. Unlike traditional bullying, which typically occurs in a specific location, cyberbullying can follow a young person everywhere, even into their own home. Victims often feel unable to escape it. Research indicates that teenagers who experience cyberbullying are at significantly higher risk of developing depression and, in severe cases, may consider self-harm. The anonymous nature of online communication makes it easier for bullies to act without facing consequences.",
+    "Many experts argue that the solution is not to ban teenagers from social media entirely, but to teach them how to use it responsibly. Schools and parents have an important role to play in helping young people develop critical thinking skills so they can question the content they see online. Setting clear boundaries around screen time, encouraging open conversations about online experiences, and promoting a healthy balance between digital and face-to-face social interaction are all recommended strategies. Ultimately, the goal is to help teenagers become confident, informed users of technology."
+  ],
+  ex1: [
+    {
+      stem: "According to paragraph one, one benefit of social media for teenagers is that it helps them …",
+      opts: [
+        "replace face-to-face communication with more efficient online contact.",
+        "maintain friendships and develop digital skills for the future.",
+        "avoid contact with people they find difficult or unpleasant.",
+        "learn how to edit photographs to a professional standard."
+      ],
+      a: 1,
+      exp: "Paragraph 1 mentions maintaining friendships and developing digital skills as genuine benefits. Option A misrepresents the text — social media is said to <em>transform</em> communication, not replace face-to-face contact."
+    },
+    {
+      stem: "The images teenagers see on social media are described as a problem because they …",
+      opts: [
+        "are posted too frequently and take up too much of teenagers' time.",
+        "contain inappropriate content that is harmful to young children.",
+        "are carefully edited and create unrealistic expectations about life.",
+        "are taken by professional photographers and are too expensive to produce."
+      ],
+      a: 2,
+      exp: "Paragraph 2 says teenagers see <em>carefully edited images</em> that create <em>unrealistic expectations about appearance and lifestyle</em>. Options A, B and D are not supported by the text."
+    },
+    {
+      stem: "Experts recommend that the best way to protect teenagers online is to …",
+      opts: [
+        "ban all social media platforms from being used in schools.",
+        "require parents to check every message their children send.",
+        "teach teenagers to use social media in a responsible and critical way.",
+        "replace digital devices in classrooms with traditional textbooks."
+      ],
+      a: 2,
+      exp: "Paragraph 4 argues the solution is to <em>teach responsible use</em> and develop critical thinking — not a total ban or complete parental monitoring. Options A, B and D go further than the text suggests."
+    }
+  ],
+  ex2: [
+    {
+      stmt: "All adults are concerned about teenagers' use of social media.",
+      a: "False",
+      exp: "Paragraph 1 says <em>many adults</em> view the shift with concern, but <em>others</em> point out genuine benefits — so not all adults are concerned. <strong>False.</strong>"
+    },
+    {
+      stmt: "Cyberbullying is harder to escape than traditional bullying because it can happen anywhere.",
+      a: "True",
+      exp: "Paragraph 3 explains that unlike traditional bullying which occurs in a specific location, cyberbullying <em>can follow a young person everywhere, even into their own home</em>. <strong>True.</strong>"
+    },
+    {
+      stmt: "The text concludes that social media should be completely banned for people under eighteen.",
+      a: "False",
+      exp: "Paragraph 4 explicitly argues that the solution is <em>not</em> to ban social media entirely, but to teach responsible use. <strong>False.</strong>"
+    }
+  ]
+},
+
+// ────────────────────────────────────────────────────────────────────
+// TEXT 4 · The Gig Economy
+// ────────────────────────────────────────────────────────────────────
+{
+  title: "The Gig Economy",
+  topic: "Work · Economics",
+  paragraphs: [
+    "In recent years, a new model of working has spread rapidly across the globe. Known as the \"gig economy,\" this system allows people to take on short-term, flexible jobs rather than committing to a single employer for a long period. Workers in the gig economy — often called \"gig workers\" or \"freelancers\" — typically use digital platforms and apps to find clients and complete tasks. Common examples include driving for a ride-sharing service, delivering food, designing websites for different clients, or providing translation services on a project-by-project basis.",
+    "For many workers, the gig economy offers an appealing level of freedom. They can choose when and how much they work, which makes it easier to balance professional and personal commitments. Parents with young children, students, and people with health conditions that prevent them from working traditional hours often find this flexibility extremely valuable. In addition, highly skilled professionals such as graphic designers, software developers, and consultants can earn considerably more as independent contractors than they would in a standard full-time role.",
+    "Despite these advantages, the gig economy has attracted significant criticism. Traditional employment typically includes benefits such as paid sick leave, holiday pay, pension contributions, and protection against unfair dismissal. Gig workers, who are usually classified as self-employed, are generally not entitled to these protections. This means that if a gig worker becomes ill or the demand for their services drops, they have no financial safety net. Critics argue that this model shifts the risk of business onto individual workers while large platform companies continue to profit.",
+    "Governments around the world are beginning to respond to these concerns. Several countries have passed new laws requiring digital platforms to provide gig workers with greater legal protections, including minimum wage guarantees and access to certain benefits. Some companies have voluntarily improved conditions for their workers, recognising that a satisfied workforce is more productive and loyal. The debate continues, however, over where exactly the line should be drawn between flexibility and security in the modern world of work."
+  ],
+  ex1: [
+    {
+      stem: "The gig economy is different from traditional employment because it offers workers …",
+      opts: [
+        "a guaranteed salary, pension, and paid holiday from their employer.",
+        "the chance to work for only one company for their entire career.",
+        "short-term, flexible work found through digital platforms and apps.",
+        "higher job security and better protection against dismissal."
+      ],
+      a: 2,
+      exp: "Paragraph 1 defines the gig economy as <em>short-term, flexible jobs</em> found through digital platforms. Options A, B and D describe features of traditional employment, not gig work."
+    },
+    {
+      stem: "One group that particularly benefits from the flexibility of gig work is …",
+      opts: [
+        "retired people who want to earn a full-time income after leaving work.",
+        "large companies looking for permanent, long-term members of staff.",
+        "parents, students, and people who cannot work traditional hours.",
+        "factory workers who prefer doing repetitive, hands-on tasks."
+      ],
+      a: 2,
+      exp: "Paragraph 2 specifically names <em>parents with young children, students, and people with health conditions</em> as groups who find the flexibility valuable. Options A, B and D are not supported by the text."
+    },
+    {
+      stem: "Critics of the gig economy argue that it is unfair because …",
+      opts: [
+        "gig workers earn far more money than traditional employees.",
+        "gig workers lack the protections and benefits of standard employment.",
+        "digital platforms do not provide enough jobs to meet demand.",
+        "gig workers are not allowed to work for more than one client."
+      ],
+      a: 1,
+      exp: "Paragraph 3 states that critics argue gig workers <em>have no financial safety net</em> and are not entitled to sick pay, holiday pay, or pensions — unlike traditional employees. Options A, C and D are not in the text."
+    }
+  ],
+  ex2: [
+    {
+      stmt: "All gig workers earn more money than people in traditional full-time jobs.",
+      a: "False",
+      exp: "Paragraph 2 says highly skilled professionals <em>can</em> earn more — not that all gig workers do. <strong>False.</strong>"
+    },
+    {
+      stmt: "Gig workers are generally not entitled to paid sick leave or pension contributions.",
+      a: "True",
+      exp: "Paragraph 3 directly states that gig workers are <em>generally not entitled</em> to paid sick leave, holiday pay, or pension contributions. <strong>True.</strong>"
+    },
+    {
+      stmt: "All governments have already passed laws fully protecting gig workers' rights.",
+      a: "False",
+      exp: "Paragraph 4 says <em>several countries</em> have passed new laws, and the debate <em>continues</em> — suggesting the process is not complete everywhere. <strong>False.</strong>"
+    }
+  ]
+},
+
+// ────────────────────────────────────────────────────────────────────
+// TEXT 5 · Artificial Intelligence in Education
+// ────────────────────────────────────────────────────────────────────
+{
+  title: "Artificial Intelligence in Education",
+  topic: "Technology · Education",
+  paragraphs: [
+    "Artificial intelligence — the ability of computer systems to perform tasks that would normally require human intelligence — is beginning to transform education in ways that were unimaginable just a decade ago. From personalised learning platforms that adapt to each student's individual pace and level, to automated systems that can mark essays and give instant feedback, AI is already being used in classrooms around the world. Supporters argue that these technologies have the potential to make high-quality education available to far more people, regardless of where they live or how wealthy they are.",
+    "One of the most promising applications of AI in education is personalised learning. Traditional classrooms typically follow a fixed curriculum at a fixed pace, which means that students who learn quickly often become bored, while those who struggle may fall further and further behind. AI-powered learning platforms can continuously analyse a student's performance and adjust the difficulty and content of lessons accordingly. If a student masters a concept quickly, the system moves on; if they are finding something difficult, it provides additional practice and explains the concept in a different way.",
+    "However, many educators and researchers have raised important concerns about the growing role of AI in schools. One worry is that an excessive reliance on technology could reduce the quality of human interaction in the classroom. Learning is not simply a matter of absorbing information — it also involves the development of social skills, critical thinking, and emotional intelligence, all of which require meaningful contact with teachers and other students. There is also concern about data privacy, as AI platforms collect large amounts of sensitive information about children's learning habits and abilities.",
+    "The question facing schools and governments today is not whether AI will play a role in education — that seems inevitable — but how to integrate it wisely. Most experts agree that AI should be seen as a tool to support teachers rather than a replacement for them. The ideal classroom of the future, they suggest, would combine the efficiency and adaptability of artificial intelligence with the creativity, empathy, and judgment that only a human teacher can provide. Getting this balance right will be one of the defining challenges of education in the twenty-first century."
+  ],
+  ex1: [
+    {
+      stem: "Supporters of AI in education believe that it could …",
+      opts: [
+        "completely replace human teachers within the next ten years.",
+        "make high-quality education available to more people worldwide.",
+        "eliminate the need for any curriculum or lesson planning.",
+        "only benefit students in wealthy, well-equipped schools."
+      ],
+      a: 1,
+      exp: "Paragraph 1 states supporters believe AI has the potential to make <em>high-quality education available to far more people, regardless of where they live or how wealthy they are</em>. Options A, C and D contradict or exaggerate the text."
+    },
+    {
+      stem: "One advantage of AI-powered learning platforms is that they …",
+      opts: [
+        "allow all students to follow exactly the same lessons at the same pace.",
+        "replace the teacher so that students can learn completely independently.",
+        "adjust the difficulty of lessons based on each student's performance.",
+        "provide students with a fixed set of exercises that never changes."
+      ],
+      a: 2,
+      exp: "Paragraph 2 explains that AI platforms <em>continuously analyse a student's performance and adjust the difficulty and content of lessons accordingly</em>. Options A and D describe the traditional classroom; option B is not supported."
+    },
+    {
+      stem: "Most experts agree that in the future, AI in education should be used as …",
+      opts: [
+        "a complete replacement for human teachers in all schools.",
+        "a temporary solution until better teaching methods are found.",
+        "a tool that supports and works alongside human teachers.",
+        "a system that only benefits students with learning difficulties."
+      ],
+      a: 2,
+      exp: "Paragraph 4 clearly states that most experts agree <em>AI should be seen as a tool to support teachers rather than a replacement for them</em>. Options A, B and D are not supported by the text."
+    }
+  ],
+  ex2: [
+    {
+      stmt: "Traditional classrooms allow fast learners and slow learners to progress at their own pace.",
+      a: "False",
+      exp: "Paragraph 2 states that traditional classrooms <em>follow a fixed curriculum at a fixed pace</em> — meaning all students go at the same speed, regardless of ability. <strong>False.</strong>"
+    },
+    {
+      stmt: "Some educators are concerned that too much AI could reduce meaningful human contact in schools.",
+      a: "True",
+      exp: "Paragraph 3 states that one worry is that <em>excessive reliance on technology could reduce the quality of human interaction in the classroom</em>. <strong>True.</strong>"
+    },
+    {
+      stmt: "The text states that the use of AI in education is optional and unlikely to become widespread.",
+      a: "False",
+      exp: "Paragraph 4 says the use of AI in education <em>seems inevitable</em> — the question is not whether it will happen but how to integrate it wisely. <strong>False.</strong>"
+    }
+  ]
+}
+
+]; // end TEXTS
+
+// ══════════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════════
+let selectedIdx = -1;
+let studentName = '';
+// answers[0..2] = ex1 answers (index), answers[3..5] = ex2 answers (True/False)
+let answers = [], answered = [];
+let timer = null, timeLeft = 480;
+
+const EX1_COUNT = 3, EX2_COUNT = 3, TOTAL = 6;
+
+function selectText(idx){
+  selectedIdx = idx;
+  document.querySelectorAll('.ts-btn').forEach((b,i) => b.classList.toggle('selected', i===idx));
+  const btn = document.getElementById('start-btn');
+  btn.style.opacity='1'; btn.style.pointerEvents='auto';
+}
+
+function goToName(){
+  if(selectedIdx<0) return;
+  show('name-screen');
+  setTimeout(()=>document.getElementById('student-name').focus(),100);
+}
+
+function confirmName(){
+  const v = document.getElementById('student-name').value.trim();
+  const err = document.getElementById('name-error');
+  if(!v){ err.style.display='block'; return; }
+  err.style.display='none';
+  studentName = v;
+  startQuiz();
+}
+
+// ── BUILD QUIZ ──────────────────────────────────────────────────
+function startQuiz(){
+  const T = TEXTS[selectedIdx];
+  answers  = Array(TOTAL).fill(null);
+  answered = Array(TOTAL).fill(false);
+  timeLeft = 480;
+
+  // Header & article
+  document.getElementById('rh-title').textContent = T.title;
+  document.getElementById('article-title').textContent = T.title;
+  const textEl = document.getElementById('article-text');
+  textEl.innerHTML = '';
+  T.paragraphs.forEach((p,i)=>{
+    const d = document.createElement('div');
+    d.className='para';
+    d.innerHTML=`<span class="para-num">${i+1}.</span>${p}`;
+    textEl.appendChild(d);
+  });
+
+  // Exercise 1 — sentence completion
+  const ex1 = document.getElementById('ex1-body');
+  ex1.innerHTML = '';
+  T.ex1.forEach((q,i)=>{
+    const block = document.createElement('div');
+    block.className='q-block';
+    block.id=`qblock-${i}`;
+    block.innerHTML=`
+      <div class="q-num-label">Question ${i+1}</div>
+      <div class="q-stem">${q.stem}</div>
+      <div class="opts" id="opts-${i}">
+        ${q.opts.map((o,j)=>`<div class="opt" onclick="selectMCQ(${i},${j})"><span class="opt-lbl">${['A','B','C','D'][j]}</span>${o}</div>`).join('')}
+      </div>
+      <div class="fb" id="fb-${i}"></div>`;
+    ex1.appendChild(block);
+  });
+
+  // Exercise 2 — true/false
+  const ex2 = document.getElementById('ex2-body');
+  ex2.innerHTML = '';
+  T.ex2.forEach((q,i)=>{
+    const gi = i + EX1_COUNT; // global index 3,4,5
+    const block = document.createElement('div');
+    block.className='q-block';
+    block.id=`qblock-tf-${i}`;
+    block.innerHTML=`
+      <div class="q-num-label">Statement ${i+1}</div>
+      <div class="q-stem"><em>"${q.stmt}"</em></div>
+      <div class="tf-row" id="tf-${gi}">
+        <div class="tf-btn" onclick="selectTF(${gi},'True')">True</div>
+        <div class="tf-btn" onclick="selectTF(${gi},'False')">False</div>
+      </div>
+      <div class="fb" id="fb-${gi}"></div>`;
+    ex2.appendChild(block);
+  });
+
+  document.getElementById('submit-btn').style.display='none';
+  updateProgress();
+  show('reading-screen');
+  document.getElementById('reading-screen').style.display='block';
+  document.getElementById('article-wrap').scrollTop=0;
+  startTimer();
+}
+
+// ── MCQ ─────────────────────────────────────────────────────────
+function selectMCQ(qIdx, optIdx){
+  if(answered[qIdx]) return;
+  answered[qIdx]=true; answers[qIdx]=optIdx;
+  const q = TEXTS[selectedIdx].ex1[qIdx];
+  const opts = document.querySelectorAll(`#opts-${qIdx} .opt`);
+  opts.forEach(o=>o.classList.add('disabled'));
+  const fb = document.getElementById(`fb-${qIdx}`);
+  if(optIdx===q.a){
+    opts[optIdx].classList.add('correct-ans');
+    fb.className='fb ok show'; fb.innerHTML=`✓ Correct! ${q.exp}`;
+  } else {
+    opts[optIdx].classList.add('wrong-ans');
+    opts[q.a].classList.add('correct-ans');
+    fb.className='fb bad show'; fb.innerHTML=`✗ Incorrect. ${q.exp}`;
+  }
+  updateProgress();
+}
+
+// ── T/F ─────────────────────────────────────────────────────────
+function selectTF(gi, chosen){
+  if(answered[gi]) return;
+  answered[gi]=true; answers[gi]=chosen;
+  const tfIdx = gi - EX1_COUNT;
+  const q = TEXTS[selectedIdx].ex2[tfIdx];
+  const btns = document.querySelectorAll(`#tf-${gi} .tf-btn`);
+  btns.forEach(b=>b.classList.add('disabled'));
+  const fb = document.getElementById(`fb-${gi}`);
+  btns.forEach(b=>{
+    if(b.textContent.trim()===q.a) b.classList.add('correct-ans');
+    else if(b.textContent.trim()===chosen && chosen!==q.a) b.classList.add('wrong-ans');
+  });
+  if(chosen===q.a){
+    fb.className='fb ok show'; fb.innerHTML=`✓ Correct! ${q.exp}`;
+  } else {
+    fb.className='fb bad show'; fb.innerHTML=`✗ Incorrect. ${q.exp}`;
+  }
+  updateProgress();
+}
+
+function updateProgress(){
+  const ex1done = answered.slice(0,EX1_COUNT).filter(Boolean).length;
+  const ex2done = answered.slice(EX1_COUNT).filter(Boolean).length;
+  document.getElementById('prog-ex1-text').textContent=`${ex1done}/${EX1_COUNT}`;
+  document.getElementById('prog-ex2-text').textContent=`${ex2done}/${EX2_COUNT}`;
+  document.getElementById('prog-fill-1').style.width=(ex1done/EX1_COUNT*100)+'%';
+  document.getElementById('prog-fill-2').style.width=(ex2done/EX2_COUNT*100)+'%';
+  if(ex1done+ex2done===TOTAL) document.getElementById('submit-btn').style.display='inline-block';
+}
+
+function submitAll(){
+  clearInterval(timer);
+  showResults('result-screen','review');
+}
+
+// ── RESULTS ─────────────────────────────────────────────────────
+function showResults(screenId, reviewId){
+  const T = TEXTS[selectedIdx];
+
+  // Score ex1
+  const ex1Correct = T.ex1.filter((q,i)=> answers[i]!==null && answers[i]===q.a).length;
+  // Score ex2
+  const ex2Correct = T.ex2.filter((q,i)=>{ const gi=i+EX1_COUNT; return answers[gi]!==null && answers[gi]===q.a; }).length;
+  const total = ex1Correct + ex2Correct;
+  const pct = Math.round((total/TOTAL)*100);
+
+  if(screenId==='result-screen'){
+    document.getElementById('rec-score-1').innerHTML=`${ex1Correct}<span> / ${EX1_COUNT}</span>`;
+    document.getElementById('rec-score-2').innerHTML=`${ex2Correct}<span> / ${EX2_COUNT}</span>`;
+    document.getElementById('rec-pct-1').textContent=Math.round(ex1Correct/EX1_COUNT*100)+'%';
+    document.getElementById('rec-pct-2').textContent=Math.round(ex2Correct/EX2_COUNT*100)+'%';
+    let title,sub;
+    if(total===TOTAL){title='Perfect Score! 🏆';sub='Outstanding reading comprehension!';}
+    else if(total>=5){title='Well Done! 🎉';sub='Great work — just one to review.';}
+    else if(total>=4){title='Good Effort! 📚';sub='Re-read the relevant paragraphs carefully.';}
+    else{title='Keep Practising! 💪';sub='Focus on finding specific evidence in the text.';}
+    document.getElementById('result-title').textContent=title;
+    document.getElementById('result-sub').textContent=sub;
+  } else {
+    document.getElementById('to-score-1').innerHTML=`${ex1Correct}<span> / ${EX1_COUNT}</span>`;
+    document.getElementById('to-score-2').innerHTML=`${ex2Correct}<span> / ${EX2_COUNT}</span>`;
+  }
+
+  const box = document.getElementById(reviewId);
+  box.innerHTML='';
+
+  // Ex1 review
+  const rv1 = document.createElement('div');
+  rv1.innerHTML=`<div class="review-ex-title t1">Exercise 1 — Sentence Completion</div>`;
+  T.ex1.forEach((q,i)=>{
+    const div=document.createElement('div'); div.className='rv-item';
+    const sa=answers[i];
+    const isOk = sa!==null && sa===q.a;
+    const da = sa===null?'(not answered)':['A','B','C','D'][sa];
+    const dc = ['A','B','C','D'][q.a];
+    div.innerHTML = isOk
+      ? `<div class="rv-q">Q${i+1} — ${q.stem}</div><div class="rv-ok">✓ ${da}</div>`
+      : `<div class="rv-q">Q${i+1} — ${q.stem}</div><div class="rv-yours">✗ You chose: ${da}</div><div class="rv-correct">✓ Correct: ${dc}</div>`;
+    rv1.appendChild(div);
+  });
+  box.appendChild(rv1);
+
+  // Ex2 review
+  const rv2 = document.createElement('div');
+  rv2.innerHTML=`<div class="review-ex-title t2">Exercise 2 — True or False</div>`;
+  T.ex2.forEach((q,i)=>{
+    const gi=i+EX1_COUNT;
+    const div=document.createElement('div'); div.className='rv-item';
+    const sa=answers[gi];
+    const isOk = sa!==null && sa===q.a;
+    div.innerHTML = isOk
+      ? `<div class="rv-q">S${i+1} — ${q.stmt}</div><div class="rv-ok">✓ ${sa}</div>`
+      : `<div class="rv-q">S${i+1} — ${q.stmt}</div><div class="rv-yours">✗ You answered: ${sa||'(not answered)'}</div><div class="rv-correct">✓ Correct: ${q.a}</div>`;
+    rv2.appendChild(div);
+  });
+  box.appendChild(rv2);
+
+  sendResults(pct, T.title);
+  show(screenId);
+}
+
+// ── TIMER ────────────────────────────────────────────────────────
+function startTimer(){
+  clearInterval(timer); updateTimerDisplay();
+  timer=setInterval(()=>{ timeLeft--; updateTimerDisplay(); if(timeLeft<=0){clearInterval(timer);timeOut();} },1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(timeLeft/60),s=timeLeft%60;
+  const el=document.getElementById('timer-display');
+  el.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  el.className='';
+  if(timeLeft<=30)el.classList.add('danger');
+  else if(timeLeft<=60)el.classList.add('warn');
+}
+function timeOut(){
+  const T=TEXTS[selectedIdx];
+  T.ex1.forEach((q,i)=>{
+    if(!answered[i]){
+      document.querySelectorAll(`#opts-${i} .opt`).forEach(o=>o.classList.add('disabled'));
+      const opts=document.querySelectorAll(`#opts-${i} .opt`);
+      if(opts[q.a]) opts[q.a].classList.add('correct-ans');
+    }
+  });
+  T.ex2.forEach((q,i)=>{
+    const gi=i+EX1_COUNT;
+    if(!answered[gi]){
+      document.querySelectorAll(`#tf-${gi} .tf-btn`).forEach(b=>{
+        b.classList.add('disabled');
+        if(b.textContent.trim()===q.a) b.classList.add('correct-ans');
+      });
+    }
+  });
+  showResults('timeout-screen','to-review');
+}
+
+// ── NAV ──────────────────────────────────────────────────────────
+function backToMenu(){ clearInterval(timer); show('intro-screen'); }
+function retryText(){  clearInterval(timer); startQuiz(); }
+
+function show(id){
+  ['intro-screen','name-screen','reading-screen','result-screen','timeout-screen'].forEach(s=>{
+    const el=document.getElementById(s);
+    el.classList.add('hidden'); el.style.display='';
+  });
+  const t=document.getElementById(id);
+  t.classList.remove('hidden');
+  if(id==='reading-screen') t.style.display='block';
+}
+
+function sendResults(pct, title){
+  const fd=new FormData();
+  fd.append('name', studentName);
+  fd.append('score', pct);
+  fd.append('date', new Date().toLocaleString()+' · '+title);
+  fetch(SHEETS_URL,{method:'POST',body:fd});
+}
+</script>
+</body>
+</html>
