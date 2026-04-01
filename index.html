@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oxford Navigate B2 · Reading Comprehension</title>
+    <title>Oxford Navigate B2 · Reading Assessment</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -27,19 +27,15 @@
         .screen { padding:40px; display:none; }
         .active { display:block; }
 
-        /* Selector UI */
         .ts-btn { background:var(--glass); border:1.5px solid var(--border); border-radius:12px; padding:15px; cursor:pointer; margin-bottom:10px; display:flex; align-items:center; gap:15px; transition:0.2s; }
-        .ts-btn:hover { background:rgba(200,147,58,0.08); transform:translateX(5px); }
         .ts-btn.selected { border-color:var(--amber2); background:rgba(200,147,58,0.12); }
         .ts-num { font-family:'Lora',serif; font-size:22px; color:var(--amber2); min-width:30px; }
 
-        /* Reading UI */
         .article-wrap { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px; margin-bottom:25px; max-height:280px; overflow-y:auto; line-height:1.8; color:rgba(242,235,224,0.85); }
         .exercise-block { border:1px solid var(--border); border-radius:12px; margin-bottom:20px; overflow:hidden; }
         .exercise-header { background:rgba(200,147,58,0.08); padding:12px 15px; font-weight:700; color:var(--amber2); font-size:14px; text-transform:uppercase; letter-spacing:1px; }
         .exercise-body { padding:20px; }
 
-        /* Interactive Elements - Neutral until end */
         .opt { background:var(--glass); border:1.5px solid rgba(255,255,255,0.1); border-radius:8px; padding:12px; cursor:pointer; margin-top:8px; display:flex; align-items:center; gap:10px; transition:0.2s; }
         .opt.selected { border-color:var(--amber); background:rgba(200,147,58,0.15); }
         .opt-lbl { width:22px; height:22px; border-radius:50%; border:1px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; }
@@ -48,7 +44,6 @@
         .tf-btn { flex:1; padding:10px; border:1px solid rgba(255,255,255,0.1); border-radius:8px; text-align:center; cursor:pointer; background:var(--glass); transition:0.2s; }
         .tf-btn.selected { background:var(--amber); color:var(--ink); font-weight:700; border-color:var(--amber); }
 
-        /* Result Classes */
         .rv-item { background:rgba(255,255,255,0.03); border-radius:10px; padding:18px; margin-bottom:12px; border-left:4px solid transparent; }
         .rv-correct-box { border-left-color: var(--green); }
         .rv-wrong-box { border-left-color: var(--red); }
@@ -58,9 +53,8 @@
 
         .btn { padding:14px 28px; border-radius:8px; border:none; cursor:pointer; font-weight:700; transition:0.3s; font-family:'Mulish'; }
         .btn-primary { background:var(--amber); color:var(--ink); width:100%; }
-        .btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 10px 20px rgba(200,147,58,0.3); }
-
-        @media (max-width: 600px) { .screen { padding:20px; } .tf-row { width:100%; } }
+        
+        @media (max-width: 600px) { .screen { padding:20px; } }
     </style>
 </head>
 <body>
@@ -68,38 +62,31 @@
 <div id="app">
     <div class="card">
         <div id="intro-screen" class="screen active">
-            <div style="text-align:center; margin-bottom:30px;">
-                <div style="font-size:12px; letter-spacing:4px; color:var(--amber); margin-bottom:10px;">OXFORD NAVIGATE B2</div>
-                <h1 style="font-family:'Lora'; font-size:32px;">Reading <em>Comprehension</em></h1>
-            </div>
+            <h1 style="font-family:'Lora'; font-size:32px; text-align:center; margin-bottom:30px;">Reading <em>Comprehension</em></h1>
             <div id="text-list"></div>
-            <button class="btn btn-primary" onclick="showScreen('name-screen')" id="next-btn" disabled style="margin-top:10px; opacity:0.4;">Select a text to begin →</button>
+            <button class="btn btn-primary" onclick="showScreen('name-screen')" id="next-btn" disabled style="margin-top:10px; opacity:0.4;">Select a text →</button>
         </div>
 
         <div id="name-screen" class="screen">
-            <h2 style="font-family:'Lora'; margin-bottom:15px;">Student <em>Identification</em></h2>
-            <p style="color:var(--muted); margin-bottom:20px;">Please enter your full name for the teacher's records.</p>
-            <input type="text" id="user-name" placeholder="Firstname Lastname" style="width:100%; padding:16px; margin-bottom:20px; background:var(--glass); border:1px solid var(--amber); color:white; border-radius:10px; font-size:16px; outline:none;">
-            <button class="btn btn-primary" onclick="startQuiz()">Start Reading Assessment</button>
+            <h2 style="font-family:'Lora'; margin-bottom:15px;">Student <em>Name</em></h2>
+            <input type="text" id="user-name" placeholder="Enter your name..." style="width:100%; padding:16px; margin-bottom:20px; background:var(--glass); border:1px solid var(--amber); color:white; border-radius:10px; font-size:16px;">
+            <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
         </div>
 
         <div id="quiz-screen" class="screen">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:15px;">
-                <div>
-                    <div id="q-topic" style="font-size:10px; color:var(--amber); letter-spacing:2px; text-transform:uppercase;"></div>
-                    <h3 id="q-title" style="font-family:'Lora';"></h3>
-                </div>
-                <div id="timer" style="font-size:24px; font-family:'Lora'; color:var(--amber2)">08:00</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 id="q-title" style="font-family:'Lora';"></h3>
+                <div id="timer" style="font-size:24px; color:var(--amber2)">08:00</div>
             </div>
             <div class="article-wrap" id="article-content"></div>
             <div id="ex1-render"></div>
             <div id="ex2-render"></div>
-            <button class="btn btn-primary" onclick="endQuiz()">Submit Final Answers</button>
+            <button class="btn btn-primary" onclick="endQuiz()">Submit Answers</button>
         </div>
 
         <div id="result-screen" class="screen">
-            <h2 id="res-header" style="font-family:'Lora'; text-align:center;"></h2>
-            <div id="score-box" style="font-size:48px; text-align:center; margin:20px 0; font-family:'Lora'; color:var(--amber2)"></div>
+            <h2 id="res-header" style="text-align:center;"></h2>
+            <div id="score-box" style="font-size:48px; text-align:center; margin:20px 0; color:var(--amber2)"></div>
             <div id="review-area"></div>
             <button class="btn btn-primary" onclick="location.reload()" style="margin-top:20px;">Return to Menu</button>
         </div>
@@ -113,56 +100,65 @@ const DATA = [
         topic: "Business · Psychology",
         text: "<p>In business, managers look for ways to improve staff productivity. The 'carrot and the stick' is a classic metaphor. The 'carrot' is a reward (bonus/promotion), while the 'stick' is punishment (fear of job loss).</p><p>Historically, the 'stick' was common in factories. Owners thought people were lazy. This works for simple, repetitive tasks. However, for creative jobs, stress and fear reduce problem-solving abilities.</p><p>The 'carrot' approach is more positive, using prizes or money. But psychologists find that after a certain point, more money doesn't mean harder work. Employees may lose interest in quality.</p>",
         ex1: [
-            { q: "The 'stick' method works best for...", opts: ["Creative work", "Simple, repetitive tasks", "Team building", "High-level management"], a: 1, exp: "Paragraph 2 states the stick approach works well for simple, repetitive tasks where the worker does not need to think too much." },
-            { q: "Financial rewards (carrots) can be negative because...", opts: ["They are too expensive", "They make staff ignore quality", "They only work for teenagers", "They cause physical stress"], a: 1, exp: "Paragraph 3 mentions that if the only goal is money, employees often lose interest in the quality of their work." }
+            { q: "The 'stick' method works best for...", opts: ["Creative work", "Simple, repetitive tasks", "Team building", "High-level management"], a: 1, exp: "Paragraph 2 states the stick approach works well for simple, repetitive tasks." },
+            { q: "Financial rewards (carrots) can be negative because...", opts: ["They are too expensive", "They make staff ignore quality", "They only work for teenagers", "They cause physical stress"], a: 1, exp: "Paragraph 3 mentions employees often lose interest in the quality of their work." },
+            { q: "Great leaders motivate people by...", opts: ["Giving more money", "Using fear", "Providing purpose and respect", "Setting shorter deadlines"], a: 2, exp: "Leaders give staff freedom and respect rather than just financial incentives." }
         ],
         ex2: [
-            { q: "Fear helps people solve complex problems faster.", a: "False", exp: "Paragraph 2 states that for jobs requiring complex skills, fear is harmful and decreases problem-solving ability." },
-            { q: "After a certain point, higher salaries do not increase hard work.", a: "True", exp: "Paragraph 3 directly states that after a certain point, a higher salary does not make people work harder." }
+            { q: "Fear helps people solve complex problems faster.", a: "False", exp: "Paragraph 2 states fear is harmful to complex problem-solving." },
+            { q: "After a certain point, higher salaries do not increase hard work.", a: "True", exp: "Psychologists found that after a point, more money doesn't mean harder work." }
         ]
     },
     {
         title: "The Science of Sleep",
         topic: "Health · Biology",
-        text: "<p>Sleep was once thought to be a passive state. Modern science shows the brain is highly active during sleep. It processes information, strengthens memories, and clears waste.</p><p>Teenagers need between 8 and 10 hours of sleep. However, their body clocks naturally shift, making it hard to sleep before midnight. Lack of sleep impairs concentration and increases risks of heart disease and diabetes.</p>",
+        text: "<p>Modern science shows the brain is highly active during sleep. It processes information, strengthens memories, and clears waste.</p><p>Teenagers need between 8 and 10 hours of sleep. However, their body clocks naturally shift, making it hard to sleep before midnight. Lack of sleep impairs concentration and increases risks of chronic diseases.</p>",
         ex1: [
-            { q: "What does the brain do during sleep?", opts: ["It completely shuts down", "It processes memories and clears waste", "It creates new physical cells", "It only rests for one hour"], a: 1, exp: "Paragraph 1 explains that the brain is extremely active, processing information and clearing out harmful waste." }
+            { q: "What does the brain do during sleep?", opts: ["Shuts down completely", "Processes information and clears waste", "Grows physically larger", "Learns new languages automatically"], a: 1, exp: "Paragraph 1 explains the active role of the brain in processing info." },
+            { q: "Lack of sleep primarily affects...", opts: ["Muscle growth", "Height", "Concentration and health", "Vision"], a: 2, exp: "Paragraph 2 notes it impairs concentration and health risks." }
         ],
         ex2: [
-            { q: "Teenagers naturally want to stay up late due to biological shifts.", a: "True", exp: "Paragraph 2 explains that their natural body clock shifts during adolescence, making it difficult to sleep early." }
+            { q: "Teenagers naturally want to stay up late due to biological shifts.", a: "True", exp: "Paragraph 2 explains the natural shift in body clocks." },
+            { q: "Most adults need the same amount of sleep as teenagers.", a: "False", exp: "Teenagers need 8-10 hours, which is typically more than adults." }
         ]
     },
     {
         title: "Social Media and Teenagers",
         topic: "Technology · Society",
-        text: "<p>Social media has transformed how teenagers interact. While it allows for global connection, it also creates pressure to maintain a perfect online image. This 'curated reality' can lead to lower self-esteem.</p><p>Studies show that excessive scrolling triggers dopamine releases similar to gambling. However, when used for creative expression or educational groups, social media has significant benefits.</p>",
+        text: "<p>Social media allows for global connection but also creates pressure to maintain a perfect image. This 'curated reality' can lead to lower self-esteem.</p><p>Excessive scrolling triggers dopamine releases similar to gambling. However, it can be beneficial when used for creative expression or educational groups.</p>",
         ex1: [
-            { q: "The 'curated reality' of social media can cause...", opts: ["Better photography skills", "Lower self-esteem", "Higher grades", "Increased physical fitness"], a: 1, exp: "Paragraph 1 mentions that the pressure to maintain a perfect image can lead to lower self-esteem." }
+            { q: "The 'curated reality' of social media can cause...", opts: ["Lower self-esteem", "Higher fitness", "Better memory", "More money"], a: 0, exp: "Paragraph 1 links curated reality to lower self-esteem." },
+            { q: "Scrolling social media is compared to...", opts: ["Playing sports", "Gambling", "Reading a book", "Sleeping"], a: 1, exp: "Paragraph 2 compares dopamine releases to gambling." }
         ],
         ex2: [
-            { q: "Social media use can trigger chemical reactions in the brain.", a: "True", exp: "Paragraph 2 mentions the release of dopamine, which is a chemical reaction similar to gambling." }
+            { q: "Social media has zero benefits for teenagers.", a: "False", exp: "The text states it has benefits for creative expression." },
+            { q: "Dopamine is released during excessive scrolling.", a: "True", exp: "Paragraph 2 explicitly mentions dopamine release." }
         ]
     },
     {
         title: "The Gig Economy",
         topic: "Work · Economics",
-        text: "<p>The 'gig economy' refers to a labor market characterized by short-term contracts or freelance work rather than permanent jobs. While it offers flexibility, it lacks traditional benefits like sick pay and pensions.</p><p>For many young professionals, the ability to choose when and where they work is highly valued. However, the lack of job security remains a major concern for the older workforce.</p>",
+        text: "<p>The 'gig economy' refers to short-term contracts or freelance work. While it offers flexibility, it lacks traditional benefits like sick pay and pensions.</p><p>Young professionals value the ability to choose when they work, but job security remains a major concern for the older workforce.</p>",
         ex1: [
-            { q: "A major disadvantage of the gig economy is...", opts: ["Too much free time", "Lack of pensions and sick pay", "Having to work in an office", "Strict 9-to-5 schedules"], a: 1, exp: "Paragraph 1 states it lacks traditional benefits like sick pay and pensions." }
+            { q: "A major disadvantage of the gig economy is...", opts: ["Too much free time", "Lack of pensions and sick pay", "Strict office rules", "Long commutes"], a: 1, exp: "Paragraph 1 mentions the lack of traditional benefits." },
+            { q: "Who values flexibility most?", opts: ["The older workforce", "Young professionals", "Government officials", "Pensioners"], a: 1, exp: "Paragraph 2 states flexibility is highly valued by young professionals." }
         ],
         ex2: [
-            { q: "Young professionals usually hate the flexibility of gig work.", a: "False", exp: "Paragraph 2 says the ability to choose when and where they work is highly valued by young professionals." }
+            { q: "Gig work is characterized by permanent, long-term jobs.", a: "False", exp: "The text defines it as short-term contracts or freelance work." },
+            { q: "Job security is a concern for older workers in this economy.", a: "True", exp: "Paragraph 2 notes security is a concern for the older workforce." }
         ]
     },
     {
         title: "AI in Education",
         topic: "Technology · Education",
-        text: "<p>Artificial Intelligence is changing classrooms. AI can provide personalized learning paths for students, allowing them to progress at their own speed. It also automates grading for teachers, saving hours of administrative time.</p><p>Critics argue that AI might reduce human interaction, which is vital for emotional development. They believe AI should be a tool for teachers, not a replacement for them.</p>",
+        text: "<p>AI can provide personalized learning paths and automate grading, saving teachers time. Critics argue it might reduce human interaction vital for emotional development.</p>",
         ex1: [
-            { q: "How does AI help teachers directly?", opts: ["By teaching physical education", "By automating grading and admin", "By replacing them entirely", "By reducing student numbers"], a: 1, exp: "Paragraph 1 states AI automates grading, saving hours of administrative time for teachers." }
+            { q: "AI helps teachers by...", opts: ["Replacing them", "Automating grading", "Taking students home", "Cleaning classrooms"], a: 1, exp: "Paragraph 1 states AI saves time by automating grading." },
+            { q: "What is a main concern about AI?", opts: ["It is too cheap", "Reduced human interaction", "It works too fast", "It only speaks English"], a: 1, exp: "Critics argue it reduces vital human interaction." }
         ],
         ex2: [
-            { q: "Critics believe AI is a perfect replacement for human teachers.", a: "False", exp: "Paragraph 2 says critics believe AI should be a tool, not a replacement, due to the need for human interaction." }
+            { q: "AI allows students to progress at their own speed.", a: "True", exp: "The text mentions personalized learning paths." },
+            { q: "Critics believe AI should replace teachers entirely.", a: "False", exp: "Critics believe AI should be a tool, not a replacement." }
         ]
     }
 ];
@@ -172,7 +168,7 @@ let state = { textIdx: null, name: "", ans1: [], ans2: [], timeLeft: 480, interv
 function init() {
     const list = document.getElementById('text-list');
     DATA.forEach((t, i) => {
-        list.innerHTML += `<div class="ts-btn" id="ts-${i}" onclick="setIdx(${i})"><div class="ts-num">${i+1}</div><div><b>${t.title}</b><br><small style="color:var(--muted)">${t.topic}</small></div></div>`;
+        list.innerHTML += `<div class="ts-btn" id="ts-${i}" onclick="setIdx(${i})"><div class="ts-num">${i+1}</div><div><b>${t.title}</b><br><small>${t.topic}</small></div></div>`;
     });
 }
 
@@ -189,13 +185,11 @@ function startQuiz() {
     showScreen('quiz-screen');
     const t = DATA[state.textIdx];
     document.getElementById('q-title').innerText = t.title;
-    document.getElementById('q-topic').innerText = t.topic;
     document.getElementById('article-content').innerHTML = t.text;
     
-    // Render Ex 1
-    let ex1H = `<div class="exercise-block"><div class="exercise-header">Exercise 1: Sentence Completion</div><div class="exercise-body">`;
+    let ex1H = `<div class="exercise-block"><div class="exercise-header">Multiple Choice</div><div class="exercise-body">`;
     t.ex1.forEach((q, i) => {
-        ex1H += `<div style="margin-bottom:20px"><div style="margin-bottom:10px"><b>${i+1}.</b> ${q.q}</div>`;
+        ex1H += `<div style="margin-bottom:20px"><b>${i+1}. ${q.q}</b>`;
         q.opts.forEach((o, oi) => {
             ex1H += `<div class="opt" id="ex1-q${i}-o${oi}" onclick="pick1(${i},${oi})"><div class="opt-lbl">${String.fromCharCode(65+oi)}</div> ${o}</div>`;
         });
@@ -203,11 +197,10 @@ function startQuiz() {
     });
     document.getElementById('ex1-render').innerHTML = ex1H + `</div></div>`;
 
-    // Render Ex 2
-    let ex2H = `<div class="exercise-block"><div class="exercise-header">Exercise 2: True or False</div><div class="exercise-body">`;
+    let ex2H = `<div class="exercise-block"><div class="exercise-header">True or False</div><div class="exercise-body">`;
     t.ex2.forEach((q, i) => {
         ex2H += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
-            <div style="flex:1; min-width:200px;"><b>${i+1}.</b> ${q.q}</div>
+            <div style="flex:1;"><b>${i+1}.</b> ${q.q}</div>
             <div class="tf-row">
                 <div class="tf-btn" id="q2-${i}-T" onclick="pick2(${i},'True')">True</div>
                 <div class="tf-btn" id="q2-${i}-F" onclick="pick2(${i},'False')">False</div>
@@ -246,7 +239,6 @@ function endQuiz() {
         const correct = state.ans1[i] === q.a;
         if(correct) score++;
         rev += `<div class="rv-item ${correct?'rv-correct-box':'rv-wrong-box'}">
-            <div style="font-size:12px; color:var(--amber); margin-bottom:5px;">QUESTION ${i+1}</div>
             <b>${q.q}</b><br><br>
             <div class="${correct?'text-green':'text-red'}">${correct?'✓ Correct':'✗ Your answer: '+(q.opts[state.ans1[i]]||'None')}</div>
             ${!correct?`<div class="text-green">Correct Answer: ${q.opts[q.a]}</div>`:''}
@@ -258,7 +250,6 @@ function endQuiz() {
         const correct = state.ans2[i] === q.a;
         if(correct) score++;
         rev += `<div class="rv-item ${correct?'rv-correct-box':'rv-wrong-box'}">
-            <div style="font-size:12px; color:var(--amber); margin-bottom:5px;">T/F QUESTION ${i+1}</div>
             <b>${q.q}</b><br><br>
             <div class="${correct?'text-green':'text-red'}">${correct?'✓ Correct':'✗ Your answer: '+(state.ans2[i]||'None')}</div>
             ${!correct?`<div class="text-green">Correct Answer: ${q.a}</div>`:''}
@@ -266,7 +257,7 @@ function endQuiz() {
         </div>`;
     });
 
-    document.getElementById('res-header').innerHTML = `${state.name}'s <em>Report</em>`;
+    document.getElementById('res-header').innerHTML = `${state.name}'s Results`;
     document.getElementById('score-box').innerText = `${score} / ${total}`;
     document.getElementById('review-area').innerHTML = rev;
 }
@@ -274,7 +265,6 @@ function endQuiz() {
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    window.scrollTo(0,0);
 }
 init();
 </script>
