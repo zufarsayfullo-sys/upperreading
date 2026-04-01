@@ -23,37 +23,29 @@
         .bg { position:fixed; inset:0; z-index:0; background: radial-gradient(ellipse 60% 40% at 20% 30%, rgba(200,147,58,0.09) 0%, transparent 65%), linear-gradient(160deg, #080810 0%, #0e0e18 100%); }
         #app { position:relative; z-index:10; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; }
         .card { background:rgba(12,12,20,0.94); backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:22px; width:100%; max-width:900px; box-shadow:0 40px 100px rgba(0,0,0,0.7); overflow:hidden; }
-
         .screen { padding:40px; display:none; }
         .active { display:block; }
-
         .ts-btn { background:var(--glass); border:1.5px solid var(--border); border-radius:12px; padding:15px; cursor:pointer; margin-bottom:10px; display:flex; align-items:center; gap:15px; transition:0.2s; }
         .ts-btn.selected { border-color:var(--amber2); background:rgba(200,147,58,0.12); }
         .ts-num { font-family:'Lora',serif; font-size:22px; color:var(--amber2); min-width:30px; }
-
         .article-wrap { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px; margin-bottom:25px; max-height:280px; overflow-y:auto; line-height:1.8; color:rgba(242,235,224,0.85); }
         .exercise-block { border:1px solid var(--border); border-radius:12px; margin-bottom:20px; overflow:hidden; }
         .exercise-header { background:rgba(200,147,58,0.08); padding:12px 15px; font-weight:700; color:var(--amber2); font-size:14px; text-transform:uppercase; letter-spacing:1px; }
         .exercise-body { padding:20px; }
-
         .opt { background:var(--glass); border:1.5px solid rgba(255,255,255,0.1); border-radius:8px; padding:12px; cursor:pointer; margin-top:8px; display:flex; align-items:center; gap:10px; transition:0.2s; }
         .opt.selected { border-color:var(--amber); background:rgba(200,147,58,0.15); }
         .opt-lbl { width:22px; height:22px; border-radius:50%; border:1px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; }
-        
         .tf-row { display:flex; gap:10px; width:180px; }
         .tf-btn { flex:1; padding:10px; border:1px solid rgba(255,255,255,0.1); border-radius:8px; text-align:center; cursor:pointer; background:var(--glass); transition:0.2s; }
         .tf-btn.selected { background:var(--amber); color:var(--ink); font-weight:700; border-color:var(--amber); }
-
         .rv-item { background:rgba(255,255,255,0.03); border-radius:10px; padding:18px; margin-bottom:12px; border-left:4px solid transparent; }
         .rv-correct-box { border-left-color: var(--green); }
         .rv-wrong-box { border-left-color: var(--red); }
         .text-green { color: var(--green); font-weight:700; }
         .text-red { color: var(--red); font-weight:700; }
         .explanation { font-size:13px; color:var(--muted); margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05); font-style:italic; }
-
-        .btn { padding:14px 28px; border-radius:8px; border:none; cursor:pointer; font-weight:700; transition:0.3s; font-family:'Mulish'; }
-        .btn-primary { background:var(--amber); color:var(--ink); width:100%; }
-        
+        .btn { padding:14px 28px; border-radius:8px; border:none; cursor:pointer; font-weight:700; transition:0.3s; font-family:'Mulish'; width:100%; }
+        .btn-primary { background:var(--amber); color:var(--ink); }
         @media (max-width: 600px) { .screen { padding:20px; } }
     </style>
 </head>
@@ -66,13 +58,11 @@
             <div id="text-list"></div>
             <button class="btn btn-primary" onclick="showScreen('name-screen')" id="next-btn" disabled style="margin-top:10px; opacity:0.4;">Select a text →</button>
         </div>
-
         <div id="name-screen" class="screen">
             <h2 style="font-family:'Lora'; margin-bottom:15px;">Student <em>Name</em></h2>
             <input type="text" id="user-name" placeholder="Enter your name..." style="width:100%; padding:16px; margin-bottom:20px; background:var(--glass); border:1px solid var(--amber); color:white; border-radius:10px; font-size:16px;">
             <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
         </div>
-
         <div id="quiz-screen" class="screen">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h3 id="q-title" style="font-family:'Lora';"></h3>
@@ -83,7 +73,6 @@
             <div id="ex2-render"></div>
             <button class="btn btn-primary" onclick="endQuiz()">Submit Answers</button>
         </div>
-
         <div id="result-screen" class="screen">
             <h2 id="res-header" style="text-align:center;"></h2>
             <div id="score-box" style="font-size:48px; text-align:center; margin:20px 0; color:var(--amber2)"></div>
@@ -92,8 +81,9 @@
         </div>
     </div>
 </div>
-
 <script>
+const scriptURL = 'https://script.google.com/macros/s/AKfycbz6QvFAjEmRJi-L3MJw4b4cCduPyeVX1YO6Ij-b-5DdUX9fgH6u1j5SfefcvutM_8vf/exec';
+
 const DATA = [
     {
         title: "The Carrot or the Stick?",
@@ -171,7 +161,6 @@ function init() {
         list.innerHTML += `<div class="ts-btn" id="ts-${i}" onclick="setIdx(${i})"><div class="ts-num">${i+1}</div><div><b>${t.title}</b><br><small>${t.topic}</small></div></div>`;
     });
 }
-
 function setIdx(i) {
     state.textIdx = i;
     document.querySelectorAll('.ts-btn').forEach(b => b.classList.remove('selected'));
@@ -179,24 +168,19 @@ function setIdx(i) {
     document.getElementById('next-btn').disabled = false;
     document.getElementById('next-btn').style.opacity = 1;
 }
-
 function startQuiz() {
     state.name = document.getElementById('user-name').value || "Student";
     showScreen('quiz-screen');
     const t = DATA[state.textIdx];
     document.getElementById('q-title').innerText = t.title;
     document.getElementById('article-content').innerHTML = t.text;
-    
     let ex1H = `<div class="exercise-block"><div class="exercise-header">Multiple Choice</div><div class="exercise-body">`;
     t.ex1.forEach((q, i) => {
         ex1H += `<div style="margin-bottom:20px"><b>${i+1}. ${q.q}</b>`;
-        q.opts.forEach((o, oi) => {
-            ex1H += `<div class="opt" id="ex1-q${i}-o${oi}" onclick="pick1(${i},${oi})"><div class="opt-lbl">${String.fromCharCode(65+oi)}</div> ${o}</div>`;
-        });
+        q.opts.forEach((o, oi) => { ex1H += `<div class="opt" id="ex1-q${i}-o${oi}" onclick="pick1(${i},${oi})"><div class="opt-lbl">${String.fromCharCode(65+oi)}</div> ${o}</div>`; });
         ex1H += `</div>`;
     });
     document.getElementById('ex1-render').innerHTML = ex1H + `</div></div>`;
-
     let ex2H = `<div class="exercise-block"><div class="exercise-header">True or False</div><div class="exercise-body">`;
     t.ex2.forEach((q, i) => {
         ex2H += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
@@ -208,7 +192,6 @@ function startQuiz() {
         </div>`;
     });
     document.getElementById('ex2-render').innerHTML = ex2H + `</div></div>`;
-
     state.interval = setInterval(() => {
         state.timeLeft--;
         let m = Math.floor(state.timeLeft/60), s = state.timeLeft%60;
@@ -216,7 +199,6 @@ function startQuiz() {
         if(state.timeLeft <= 0) endQuiz();
     }, 1000);
 }
-
 function pick1(qI, oI) {
     state.ans1[qI] = oI;
     DATA[state.textIdx].ex1[qI].opts.forEach((_, i) => document.getElementById(`ex1-q${qI}-o${i}`).classList.remove('selected'));
@@ -228,43 +210,37 @@ function pick2(qI, val) {
     document.getElementById(`q2-${qI}-F`).classList.remove('selected');
     document.getElementById(`q2-${qI}-${val[0]}`).classList.add('selected');
 }
-
 function endQuiz() {
     clearInterval(state.interval);
-    showScreen('result-screen');
     const t = DATA[state.textIdx];
     let score = 0, total = t.ex1.length + t.ex2.length, rev = "";
-
     t.ex1.forEach((q, i) => {
         const correct = state.ans1[i] === q.a;
         if(correct) score++;
-        rev += `<div class="rv-item ${correct?'rv-correct-box':'rv-wrong-box'}">
-            <b>${q.q}</b><br><br>
-            <div class="${correct?'text-green':'text-red'}">${correct?'✓ Correct':'✗ Your answer: '+(q.opts[state.ans1[i]]||'None')}</div>
-            ${!correct?`<div class="text-green">Correct Answer: ${q.opts[q.a]}</div>`:''}
-            <div class="explanation"><b>Feedback:</b> ${q.exp}</div>
-        </div>`;
+        rev += `<div class="rv-item ${correct?'rv-correct-box':'rv-wrong-box'}"><b>${q.q}</b><br><br><div class="${correct?'text-green':'text-red'}">${correct?'✓ Correct':'✗ Your answer: '+(q.opts[state.ans1[i]]||'None')}</div>${!correct?`<div class="text-green">Correct: ${q.opts[q.a]}</div>`:''}<div class="explanation"><b>Feedback:</b> ${q.exp}</div></div>`;
     });
-
     t.ex2.forEach((q, i) => {
         const correct = state.ans2[i] === q.a;
         if(correct) score++;
-        rev += `<div class="rv-item ${correct?'rv-correct-box':'rv-wrong-box'}">
-            <b>${q.q}</b><br><br>
-            <div class="${correct?'text-green':'text-red'}">${correct?'✓ Correct':'✗ Your answer: '+(state.ans2[i]||'None')}</div>
-            ${!correct?`<div class="text-green">Correct Answer: ${q.a}</div>`:''}
-            <div class="explanation"><b>Feedback:</b> ${q.exp}</div>
-        </div>`;
+        rev += `<div class="rv-item ${correct?'rv-correct-box':'rv-wrong-box'}"><b>${q.q}</b><br><br><div class="${correct?'text-green':'text-red'}">${correct?'✓ Correct':'✗ Your answer: '+(state.ans2[i]||'None')}</div>${!correct?`<div class="text-green">Correct: ${q.a}</div>`:''}<div class="explanation"><b>Feedback:</b> ${q.exp}</div></div>`;
     });
 
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: state.name, text: t.title, score: `${score}/${total}`, timestamp: new Date().toLocaleString() })
+    }).catch(e => console.log("Sheet Error:", e));
+
+    showScreen('result-screen');
     document.getElementById('res-header').innerHTML = `${state.name}'s Results`;
     document.getElementById('score-box').innerText = `${score} / ${total}`;
     document.getElementById('review-area').innerHTML = rev;
 }
-
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
 }
 init();
 </script>
