@@ -88,67 +88,78 @@ const DATA = [
     {
         title: "The Carrot or the Stick?",
         topic: "Business · Psychology",
-        text: "<p>In business, managers look for ways to improve staff productivity. The 'carrot and the stick' is a classic metaphor. The 'carrot' is a reward (bonus/promotion), while the 'stick' is punishment (fear of job loss).</p><p>Historically, the 'stick' was common in factories. Owners thought people were lazy. This works for simple, repetitive tasks. However, for creative jobs, stress and fear reduce problem-solving abilities.</p><p>The 'carrot' approach is more positive, using prizes or money. But psychologists find that after a certain point, more money doesn't mean harder work. Employees may lose interest in quality.</p>",
+        text: `<p>In business, managers constantly look for ways to improve staff productivity. The 'carrot and the stick' is a classic metaphor borrowed from the idea of motivating a donkey to move. The 'carrot' represents a reward — such as a bonus or promotion — while the 'stick' represents punishment, typically the fear of losing one's job.</p>
+<p>Historically, the 'stick' approach was common in factories during the Industrial Revolution. Owners assumed that people were naturally lazy and needed to be forced to work. This method can be effective for simple, repetitive tasks where output is easy to measure. However, research shows that for creative or complex jobs, stress and fear actually reduce problem-solving abilities and stifle innovation.</p>
+<p>The 'carrot' approach is more positive, using prizes or financial bonuses to encourage effort. However, psychologists have found that after a certain point, more money does not mean harder work. Once employees feel financially comfortable, they may lose interest in the quality of their output and focus only on completing tasks to earn the reward.</p>
+<p>The most effective leaders understand that neither the carrot nor the stick alone is sufficient. Instead, great leaders motivate people by providing a sense of purpose, autonomy, and respect. When employees feel that their work is meaningful and that their contributions are valued, they are far more likely to perform at their best — not because they fear punishment or expect a reward, but because they genuinely care about the outcome.</p>`,
         ex1: [
-            { q: "The 'stick' method works best for...", opts: ["Creative work", "Simple, repetitive tasks", "Team building", "High-level management"], a: 1, exp: "Paragraph 2 states the stick approach works well for simple, repetitive tasks." },
-            { q: "Financial rewards (carrots) can be negative because...", opts: ["They are too expensive", "They make staff ignore quality", "They only work for teenagers", "They cause physical stress"], a: 1, exp: "Paragraph 3 mentions employees often lose interest in the quality of their work." },
-            { q: "Great leaders motivate people by...", opts: ["Giving more money", "Using fear", "Providing purpose and respect", "Setting shorter deadlines"], a: 2, exp: "Leaders give staff freedom and respect rather than just financial incentives." }
+            { q: "The 'stick' method works best for...", opts: ["Creative work", "Simple, repetitive tasks", "Team building", "High-level management"], a: 1, exp: "Paragraph 2 states the stick approach works well for simple, repetitive tasks where output is easy to measure." },
+            { q: "Financial rewards (carrots) can be negative because...", opts: ["They are too expensive", "They make staff ignore quality", "They only work for teenagers", "They cause physical stress"], a: 1, exp: "Paragraph 3 mentions that employees may lose interest in the quality of their work once they focus only on earning the reward." },
+            { q: "Great leaders motivate people by...", opts: ["Giving more money", "Using fear", "Providing purpose and respect", "Setting shorter deadlines"], a: 2, exp: "Paragraph 4 explicitly states that great leaders motivate people by providing a sense of purpose, autonomy, and respect." }
         ],
         ex2: [
-            { q: "Fear helps people solve complex problems faster.", a: "False", exp: "Paragraph 2 states fear is harmful to complex problem-solving." },
-            { q: "After a certain point, higher salaries do not increase hard work.", a: "True", exp: "Psychologists found that after a point, more money doesn't mean harder work." }
+            { q: "Fear helps people solve complex problems faster.", a: "False", exp: "Paragraph 2 states that for creative or complex jobs, stress and fear reduce problem-solving abilities." },
+            { q: "After a certain point, higher salaries do not increase hard work.", a: "True", exp: "Paragraph 3 states that after a certain point, more money does not mean harder work." }
         ]
     },
     {
         title: "The Science of Sleep",
         topic: "Health · Biology",
-        text: "<p>Modern science shows the brain is highly active during sleep. It processes information, strengthens memories, and clears waste.</p><p>Teenagers need between 8 and 10 hours of sleep. However, their body clocks naturally shift, making it hard to sleep before midnight. Lack of sleep impairs concentration and increases risks of chronic diseases.</p>",
+        text: `<p>For many years, sleep was considered a passive state — a time when the brain simply rested. Modern science, however, has revealed that the brain is extraordinarily active during sleep. While the body rests, the brain works to process information gathered during the day, strengthen memories, and clear out metabolic waste products that accumulate during waking hours. Without adequate sleep, these essential functions are disrupted.</p>
+<p>Teenagers need between 8 and 10 hours of sleep each night, significantly more than adults. However, their body clocks naturally shift during puberty, releasing melatonin — the sleep hormone — later in the evening. This biological change makes it genuinely difficult for most teenagers to fall asleep before midnight, regardless of how hard they try. As a result, early school start times often conflict with adolescent biology.</p>
+<p>The consequences of chronic sleep deprivation are serious. Lack of sleep impairs concentration, memory, and decision-making, making it harder to learn effectively. In the long term, consistently poor sleep increases the risk of chronic diseases such as obesity, diabetes, and cardiovascular problems. Experts recommend that schools and parents take teenage sleep needs seriously, rather than dismissing late sleeping as laziness.</p>`,
         ex1: [
-            { q: "What does the brain do during sleep?", opts: ["Shuts down completely", "Processes information and clears waste", "Grows physically larger", "Learns new languages automatically"], a: 1, exp: "Paragraph 1 explains the active role of the brain in processing info." },
-            { q: "Lack of sleep primarily affects...", opts: ["Muscle growth", "Height", "Concentration and health", "Vision"], a: 2, exp: "Paragraph 2 notes it impairs concentration and health risks." }
+            { q: "What does the brain do during sleep?", opts: ["Shuts down completely", "Processes information and clears waste", "Grows physically larger", "Learns new languages automatically"], a: 1, exp: "Paragraph 1 explains that the brain processes information, strengthens memories, and clears out metabolic waste during sleep." },
+            { q: "Lack of sleep primarily affects...", opts: ["Muscle growth", "Height", "Concentration and health", "Vision"], a: 2, exp: "Paragraph 3 notes that sleep deprivation impairs concentration and increases the risk of chronic diseases." }
         ],
         ex2: [
-            { q: "Teenagers naturally want to stay up late due to biological shifts.", a: "True", exp: "Paragraph 2 explains the natural shift in body clocks." },
-            { q: "Most adults need the same amount of sleep as teenagers.", a: "False", exp: "Teenagers need 8-10 hours, which is typically more than adults." }
+            { q: "Teenagers naturally want to stay up late due to biological shifts.", a: "True", exp: "Paragraph 2 explains that the body clock shifts during puberty, releasing melatonin later and making it hard to sleep before midnight." },
+            { q: "Most adults need the same amount of sleep as teenagers.", a: "False", exp: "Paragraph 2 states that teenagers need 8–10 hours, which is significantly more than adults typically require." }
         ]
     },
     {
         title: "Social Media and Teenagers",
         topic: "Technology · Society",
-        text: "<p>Social media allows for global connection but also creates pressure to maintain a perfect image. This 'curated reality' can lead to lower self-esteem.</p><p>Excessive scrolling triggers dopamine releases similar to gambling. However, it can be beneficial when used for creative expression or educational groups.</p>",
+        text: `<p>Social media platforms have transformed the way teenagers communicate and see the world. On one hand, these platforms allow young people to connect with friends globally, share their interests, and access information instantly. On the other hand, they create intense pressure to maintain a perfect image. Users carefully select and edit photos, presenting an idealised version of their lives. This 'curated reality' can lead to lower self-esteem, as teenagers compare their ordinary lives to the highlight reels of others.</p>
+<p>From a neurological perspective, the act of scrolling through social media triggers repeated releases of dopamine — a chemical in the brain associated with pleasure and reward. This mechanism is similar to the way gambling activates the brain's reward system, making social media platforms psychologically addictive. Users keep scrolling in search of the next 'like' or exciting post, even when they intend to stop.</p>
+<p>However, it would be inaccurate to say that social media has zero benefits for teenagers. When used thoughtfully, it can be a powerful tool for creative expression — through photography, writing, or video production. Many young people also use social media to join educational groups, access tutorials, and participate in communities that share their academic or professional interests. The key, according to experts, lies in balance and digital literacy: teaching teenagers to use these platforms intentionally rather than compulsively.</p>`,
         ex1: [
-            { q: "The 'curated reality' of social media can cause...", opts: ["Lower self-esteem", "Higher fitness", "Better memory", "More money"], a: 0, exp: "Paragraph 1 links curated reality to lower self-esteem." },
-            { q: "Scrolling social media is compared to...", opts: ["Playing sports", "Gambling", "Reading a book", "Sleeping"], a: 1, exp: "Paragraph 2 compares dopamine releases to gambling." }
+            { q: "The 'curated reality' of social media can cause...", opts: ["Lower self-esteem", "Higher fitness", "Better memory", "More money"], a: 0, exp: "Paragraph 1 directly links curated reality — idealised images of others' lives — to lower self-esteem in teenagers." },
+            { q: "Scrolling social media is compared to...", opts: ["Playing sports", "Gambling", "Reading a book", "Sleeping"], a: 1, exp: "Paragraph 2 compares the dopamine release from scrolling to the way gambling activates the brain's reward system." }
         ],
         ex2: [
-            { q: "Social media has zero benefits for teenagers.", a: "False", exp: "The text states it has benefits for creative expression." },
-            { q: "Dopamine is released during excessive scrolling.", a: "True", exp: "Paragraph 2 explicitly mentions dopamine release." }
+            { q: "Social media has zero benefits for teenagers.", a: "False", exp: "Paragraph 3 explicitly states it would be inaccurate to say social media has zero benefits, citing creative expression and educational uses." },
+            { q: "Dopamine is released during excessive scrolling.", a: "True", exp: "Paragraph 2 explicitly states that scrolling triggers repeated releases of dopamine in the brain." }
         ]
     },
     {
         title: "The Gig Economy",
         topic: "Work · Economics",
-        text: "<p>The 'gig economy' refers to short-term contracts or freelance work. While it offers flexibility, it lacks traditional benefits like sick pay and pensions.</p><p>Young professionals value the ability to choose when they work, but job security remains a major concern for the older workforce.</p>",
+        text: `<p>The term 'gig economy' refers to a labour market characterised by short-term contracts, freelance work, and on-demand employment, rather than permanent jobs. Workers in this system — such as delivery drivers, graphic designers, and private tutors — are typically classified as independent contractors rather than employees. While this arrangement offers considerable flexibility to choose when and where to work, it comes with a significant downside: workers lack traditional employment benefits such as sick pay, paid holidays, and company pensions.</p>
+<p>The appeal of the gig economy varies considerably across age groups. Young professionals, in particular, tend to value the freedom and flexibility it provides. Many prefer the ability to manage their own schedules, take on multiple clients, and pursue passion projects alongside paid work. For this group, the traditional nine-to-five model can feel restrictive. However, for older workers — especially those with families and financial commitments — job security remains a major concern. Without the safety net of a permanent contract, unexpected illness or a sudden drop in demand can lead to serious financial hardship.</p>
+<p>Governments around the world are currently debating how to regulate gig work fairly. Some argue that platform companies exploit workers by denying them employee rights, while others believe that heavy regulation would undermine the flexibility that makes gig work attractive in the first place. Finding the right balance is one of the defining economic challenges of the twenty-first century.</p>`,
         ex1: [
-            { q: "A major disadvantage of the gig economy is...", opts: ["Too much free time", "Lack of pensions and sick pay", "Strict office rules", "Long commutes"], a: 1, exp: "Paragraph 1 mentions the lack of traditional benefits." },
-            { q: "Who values flexibility most?", opts: ["The older workforce", "Young professionals", "Government officials", "Pensioners"], a: 1, exp: "Paragraph 2 states flexibility is highly valued by young professionals." }
+            { q: "A major disadvantage of the gig economy is...", opts: ["Too much free time", "Lack of pensions and sick pay", "Strict office rules", "Long commutes"], a: 1, exp: "Paragraph 1 explicitly lists the lack of traditional benefits such as sick pay, paid holidays, and pensions as a key disadvantage." },
+            { q: "Who values flexibility most?", opts: ["The older workforce", "Young professionals", "Government officials", "Pensioners"], a: 1, exp: "Paragraph 2 states that young professionals, in particular, value the freedom and flexibility the gig economy provides." }
         ],
         ex2: [
-            { q: "Gig work is characterized by permanent, long-term jobs.", a: "False", exp: "The text defines it as short-term contracts or freelance work." },
-            { q: "Job security is a concern for older workers in this economy.", a: "True", exp: "Paragraph 2 notes security is a concern for the older workforce." }
+            { q: "Gig work is characterized by permanent, long-term jobs.", a: "False", exp: "Paragraph 1 defines gig work specifically as short-term contracts and freelance work, not permanent employment." },
+            { q: "Job security is a concern for older workers in this economy.", a: "True", exp: "Paragraph 2 explicitly states that for older workers with families and financial commitments, job security remains a major concern." }
         ]
     },
     {
         title: "AI in Education",
         topic: "Technology · Education",
-        text: "<p>AI can provide personalized learning paths and automate grading, saving teachers time. Critics argue it might reduce human interaction vital for emotional development.</p>",
+        text: `<p>Artificial intelligence is rapidly changing the landscape of education. One of its most promising applications is the creation of personalised learning paths — systems that analyse each student's strengths, weaknesses, and pace of progress, then adapt the curriculum accordingly. Rather than following a one-size-fits-all syllabus, students using AI-powered tools can advance through material at their own speed, spending more time on challenging topics and less on concepts they have already mastered. This approach allows students to progress at their own individual pace, something traditional classroom teaching often struggles to achieve.</p>
+<p>AI also offers significant benefits to teachers. By automating time-consuming tasks such as grading multiple-choice tests, tracking attendance, and generating progress reports, AI frees up valuable time that educators can redirect towards more meaningful activities — such as mentoring students, designing creative lessons, and providing individual support.</p>
+<p>However, not everyone is enthusiastic. Critics argue that increased reliance on AI in schools could reduce the amount of human interaction that students experience — interaction that many psychologists consider vital for emotional development, social skills, and mental wellbeing. A child who learns primarily through a screen may miss out on the collaborative, conversational, and empathetic dimensions of education that a human teacher naturally provides. Most experts therefore argue that AI should serve as a powerful tool to support teachers, not as a replacement for them.</p>`,
         ex1: [
-            { q: "AI helps teachers by...", opts: ["Replacing them", "Automating grading", "Taking students home", "Cleaning classrooms"], a: 1, exp: "Paragraph 1 states AI saves time by automating grading." },
-            { q: "What is a main concern about AI?", opts: ["It is too cheap", "Reduced human interaction", "It works too fast", "It only speaks English"], a: 1, exp: "Critics argue it reduces vital human interaction." }
+            { q: "AI helps teachers by...", opts: ["Replacing them", "Automating grading", "Taking students home", "Cleaning classrooms"], a: 1, exp: "Paragraph 2 states that AI saves teachers time by automating grading, attendance tracking, and progress reports." },
+            { q: "What is a main concern about AI?", opts: ["It is too cheap", "Reduced human interaction", "It works too fast", "It only speaks English"], a: 1, exp: "Paragraph 3 states that critics argue AI could reduce human interaction, which is vital for emotional development and social skills." }
         ],
         ex2: [
-            { q: "AI allows students to progress at their own speed.", a: "True", exp: "The text mentions personalized learning paths." },
-            { q: "Critics believe AI should replace teachers entirely.", a: "False", exp: "Critics believe AI should be a tool, not a replacement." }
+            { q: "AI allows students to progress at their own speed.", a: "True", exp: "Paragraph 1 explicitly states that AI-powered tools allow students to advance through material at their own individual pace." },
+            { q: "Critics believe AI should replace teachers entirely.", a: "False", exp: "Paragraph 3 states that most experts argue AI should serve as a tool to support teachers, not replace them." }
         ]
     }
 ];
